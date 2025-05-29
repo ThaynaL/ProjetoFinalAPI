@@ -1,9 +1,12 @@
 package org.serratec.backend.entity;
 
+import java.util.List;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 
 @Entity
 public class Categoria {
@@ -12,6 +15,9 @@ public class Categoria {
     private Long id;
     private String nomeCategoria;
     private String descricaoCategoria;
+    
+    @OneToMany(mappedBy = "produto")
+    private List<Produto> produto;
 
     public Long getId() {
         return id;

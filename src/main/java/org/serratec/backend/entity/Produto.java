@@ -1,11 +1,15 @@
 package org.serratec.backend.entity;
 
+import java.math.BigDecimal;
+import java.util.List;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-
-import java.math.BigDecimal;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 
 @Entity
 public class Produto {
@@ -15,7 +19,14 @@ public class Produto {
     private String nomeProduto;
     private String descricaoProduto;
     private BigDecimal valorProduto;
+    
+    @ManyToOne
+    @JoinColumn(name = "id_produto")
+    private Categoria categoria;
 
+    @OneToMany(mappedBy = "produto")
+    private List<ItemPedido> itemPedidos;
+    
     public Long getId() {
         return id;
     }
