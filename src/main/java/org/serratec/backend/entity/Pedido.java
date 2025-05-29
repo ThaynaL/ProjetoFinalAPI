@@ -1,13 +1,15 @@
 package org.serratec.backend.entity;
 
+import java.time.LocalDateTime;
+import java.util.List;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-
-import java.math.BigDecimal;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 
 @Entity
 public class Pedido {
@@ -18,6 +20,13 @@ public class Pedido {
     private StatusPedido statusPedido;
     private LocalDateTime dataEntregaPedido;
 
+    @ManyToOne
+    @JoinColumn(name = "id_cliente")
+    private Cliente cliente;
+    
+    @OneToMany(mappedBy = "pedido")
+    private List<ItemPedido> itemPedidos;
+    
     public Long getId() {
         return id;
     }
