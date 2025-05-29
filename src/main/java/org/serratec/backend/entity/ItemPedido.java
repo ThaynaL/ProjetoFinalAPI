@@ -1,14 +1,20 @@
 package org.serratec.backend.entity;
-
+import java.math.BigDecimal;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 
-import java.math.BigDecimal;
+/**
+ * A classe VENDA
+ * foi alterada para
+ * itemPedido
+ */
 
 @Entity
-public class Venda {
+public class ItemPedido {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -16,6 +22,14 @@ public class Venda {
     private Integer quantidade;
     private BigDecimal valorVenda;
 
+    @ManyToOne
+    @JoinColumn(name = "id_produto")
+    private Produto produto;
+    
+    @ManyToOne
+    @JoinColumn(name = "id_pedido")
+    private Pedido pedido;
+    
     public Long getId() {
         return id;
     }
