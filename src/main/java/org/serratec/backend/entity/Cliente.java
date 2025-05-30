@@ -18,10 +18,18 @@ public class Cliente {
     private String email;
     private String cpf;
     
-    @OneToMany(mappedBy = "pedido")
+    @OneToMany(mappedBy = "cliente")
     private List<Pedido> pedidos;
     
-    public Long getId() {
+    public List<Pedido> getPedidos() {
+		return pedidos;
+	}
+
+	public void setPedidos(List<Pedido> pedidos) {
+		this.pedidos = pedidos;
+	}
+
+	public Long getId() {
         return id;
     }
 

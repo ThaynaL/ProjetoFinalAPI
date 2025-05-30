@@ -18,7 +18,7 @@ public class ItemPedido {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private Double descontoPersentual;
+    private Double descontoPercentual;
     private Integer quantidade;
     private BigDecimal valorVenda;
 
@@ -38,12 +38,12 @@ public class ItemPedido {
         this.id = id;
     }
 
-    public Double getDescontoPersentual() {
-        return descontoPersentual;
+    public Double getDescontoPercentual() {
+        return descontoPercentual;
     }
 
-    public void setDescontoPersentual(Double descontoPersentual) {
-        this.descontoPersentual = descontoPersentual;
+    public void setDescontoPercentual(Double descontoPercentual) {
+        this.descontoPercentual = descontoPercentual;
     }
 
     public Integer getQuantidade() {
@@ -61,4 +61,20 @@ public class ItemPedido {
     public void setValorVenda(BigDecimal valorVenda) {
         this.valorVenda = valorVenda;
     }
+
+	public Produto getProduto() {
+		return produto;
+	}
+
+	public void setProduto(Produto produto) {
+		this.produto = produto;
+	}
+
+	public Pedido getPedido() {
+		return pedido;
+	}
+
+	public void setPedido(Pedido pedido) {
+		this.pedido = pedido;
+	}
 }
