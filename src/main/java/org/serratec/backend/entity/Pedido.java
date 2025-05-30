@@ -2,6 +2,8 @@ package org.serratec.backend.entity;
 import java.time.LocalDateTime;
 import java.util.List;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -15,6 +17,8 @@ public class Pedido {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private LocalDateTime dataPedido;
+    
+    @Enumerated(EnumType.STRING)
     private StatusPedido statusPedido;
     private LocalDateTime dataEntregaPedido;
 
@@ -31,7 +35,23 @@ public class Pedido {
     @JoinColumn(name = "id_cliente")
     private Cliente cliente;
     
-    @OneToMany(mappedBy = "pedido")
+    public Cliente getCliente() {
+		return cliente;
+	}
+
+	public void setCliente(Cliente cliente) {
+		this.cliente = cliente;
+	}
+
+	public List<ItemPedido> getItemPedidos() {
+		return itemPedidos;
+	}
+
+	public void setItemPedidos(List<ItemPedido> itemPedidos) {
+		this.itemPedidos = itemPedidos;
+	}
+
+	@OneToMany(mappedBy = "pedido")
     private List<ItemPedido> itemPedidos;
     
     public Long getId() {
