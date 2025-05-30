@@ -1,8 +1,6 @@
 package org.serratec.backend.entity;
-
 import java.time.LocalDateTime;
 import java.util.List;
-
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -19,6 +17,15 @@ public class Pedido {
     private LocalDateTime dataPedido;
     private StatusPedido statusPedido;
     private LocalDateTime dataEntregaPedido;
+
+
+    /**
+     * Varios pedidos
+     * podem ser de um
+     * determinado cliente
+     * @manytoone
+     */
+
 
     @ManyToOne
     @JoinColumn(name = "id_cliente")
@@ -57,5 +64,9 @@ public class Pedido {
 
     public void setDataEntregaPedido(LocalDateTime dataEntregaPedido) {
         this.dataEntregaPedido = dataEntregaPedido;
+    }
+
+    public List<ItemPedido> getItemPedidos() {
+        return itemPedidos;
     }
 }
