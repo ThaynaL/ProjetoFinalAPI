@@ -1,40 +1,32 @@
-package org.serratec.backend.entity;
+package org.serratec.backend.dto;
+import jakarta.validation.constraints.NotNull;
 
 import java.math.BigDecimal;
-import java.util.List;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToMany;
-
-@Entity
-public class Produto {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+public class ProdutoDTO {
+    @NotNull
     private Long id;
+    @NotNull
     private String nomeProduto;
+    @NotNull
     private String descricaoProduto;
+    @NotNull
     private BigDecimal valorProduto;
 
     /**
-     * Varios produtos
-     * podem estar em um determinado
-     * pedido
-     * @manytoone
+     * Construtor vazio
      */
 
+    public ProdutoDTO(){
+    }
 
-    @ManyToOne
-    @JoinColumn(name = "id_categoria")
-    private Categoria categoria;
+    public ProdutoDTO(Long id, String nomeProduto, String descricaoProduto, BigDecimal valorProduto) {
+        this.id = id;
+        this.nomeProduto = nomeProduto;
+        this.descricaoProduto = descricaoProduto;
+        this.valorProduto = valorProduto;
+    }
 
-    @OneToMany(mappedBy = "produto")
-    private List<ItemPedido> itemPedidos;
-    
     public Long getId() {
         return id;
     }
