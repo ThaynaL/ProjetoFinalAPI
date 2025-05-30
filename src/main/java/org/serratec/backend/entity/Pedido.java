@@ -18,7 +18,6 @@ public class Pedido {
     private Long id;
     private LocalDateTime dataPedido;
     
-    @Enumerated(EnumType.STRING)
     private StatusPedido statusPedido;
     private LocalDateTime dataEntregaPedido;
 
