@@ -15,6 +15,17 @@ public class Endereco {
     private String localidade;
     private String uf;
 
+    @Override
+    public String toString() {
+        return "Endereco{" +
+                "Cep:" + cep + '\'' +
+                ", logradouro: " + logradouro + '\'' +
+                ", bairro: " + bairro + '\'' +
+                ", localidade: " + localidade + '\'' +
+                ", uf: " + uf + '\'' +
+                '}';
+    }
+
     public Long getId() {
         return id;
     }

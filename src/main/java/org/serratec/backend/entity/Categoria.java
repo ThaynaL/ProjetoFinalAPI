@@ -14,8 +14,7 @@ public class Categoria {
     private String nomeCategoria;
     private String descricaoCategoria;
     
-    @OneToMany(mappedBy = "produto")
-    private List<Produto> produto;
+
 
     public Long getId() {
         return id;

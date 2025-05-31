@@ -1,32 +1,46 @@
 package org.serratec.backend.entity;
 
 import java.util.List;
+import java.util.UUID;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
+import jakarta.persistence.*;
 
 @Entity
 public class Cliente {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    @GeneratedValue(strategy = GenerationType.UUID)
+    private UUID idUuid;
     private String nome;
     private String telefone;
     private String email;
+    private String senha;
     private String cpf;
+
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "id_endereco")
+    private Endereco endereco;
     
-    @OneToMany(mappedBy = "pedido")
-    private List<Pedido> pedidos;
-    
-    public Long getId() {
-        return id;
+//    @OneToMany(mappedBy = "pedido")
+//    private List<Pedido> pedidos;
+
+    @Override
+    public String toString() {
+        return "Cliente{" +
+                "Nome: " + nome + '\'' +
+                ", Telefone: " + telefone + '\'' +
+                ", E-mail: " + email + '\'' +
+                ", CPF: " + cpf + '\'' +
+                ", Endereco: " + endereco + '\'' +
+//                ", Pedidos: " + pedidos + '\'' +
+                '}';
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public UUID getIdUuid() {
+        return idUuid;
+    }
+
+    public void setIdUuid(UUID idUuid) {
+        this.idUuid = idUuid;
     }
 
     public String getNome() {
@@ -53,11 +67,31 @@ public class Cliente {
         this.email = email;
     }
 
+    public String getSenha() {
+        return senha;
+    }
+
+    public void setSenha(String senha) {
+        this.senha = senha;
+    }
+
     public String getCpf() {
         return cpf;
     }
 
     public void setCpf(String cpf) {
         this.cpf = cpf;
+    }
+
+//    public List<Pedido> getPedidos() {
+//        return pedidos;
+//    }
+
+    public Endereco getEndereco() {
+        return endereco;
+    }
+
+    public void setEndereco(Endereco endereco) {
+        this.endereco = endereco;
     }
 }
