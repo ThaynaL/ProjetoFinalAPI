@@ -1,7 +1,7 @@
 package org.serratec.backend.controller;
 import jakarta.validation.Valid;
 import org.eclipse.angus.mail.imap.protocol.ID;
-import org.serratec.backend.dto.ProdutoDTO;
+import org.serratec.backend.dto.ProdutoResponseDTO;
 import org.serratec.backend.entity.Produto;
 import org.serratec.backend.repository.ProdutoRepository;
 
@@ -34,9 +34,9 @@ public class ProdutoController {
      */
 
     @PostMapping("/produtos")
-    public ResponseEntity<Produto> saveProduct(@RequestBody @Valid ProdutoDTO produtoDTO) {
+    public ResponseEntity<Produto> saveProduct(@RequestBody @Valid ProdutoResponseDTO produtoResponseDTO) {
         var produto = new Produto();
-        BeanUtils.copyProperties(produtoDTO, produto);
+        BeanUtils.copyProperties(produtoResponseDTO, produto);
         return ResponseEntity.status(HttpStatus.CREATED).body(ProdutoRepository.save(produto));
     }
 
@@ -82,13 +82,13 @@ public class ProdutoController {
 
     @PutMapping({"/produtos/{id}"})
     public ResponseEntity<Produto> updateProduto(@PathVariable(value="id") ID id,
-                                                @RequestBody @Valid ProdutoDTO produtoDTO){
+                                                @RequestBody @Valid ProdutoResponseDTO produtoResponseDTO){
         Optional<Produto> produtoObj = produtoRepository.findById(id);
         if (produtoObj.isEmpty()) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Produto nao foi encontrado.");
         }
         var productModel = produtoObj.get();
-        BeanUtils.copyProperties(produtoDTO, "id");
+        BeanUtils.copyProperties(produtoResponseDTO, "id");
         return ResponseEntity.status(HttpStatus.OK).body(produtoRepository.save(productModel));
     }
 
