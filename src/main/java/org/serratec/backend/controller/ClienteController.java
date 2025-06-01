@@ -1,5 +1,6 @@
 package org.serratec.backend.controller;
 
+import jakarta.validation.Valid;
 import org.serratec.backend.dto.ClienteRequestDTO;
 import org.serratec.backend.dto.ClienteResponseDTO;
 import org.serratec.backend.service.ClienteService;
@@ -25,13 +26,13 @@ public class ClienteController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public ClienteResponseDTO cadastrar(@RequestBody ClienteRequestDTO cliente) {
+    public ClienteResponseDTO cadastrar(@RequestBody @Valid ClienteRequestDTO cliente) {
         return service.inserir(cliente);
     }
 
     @PutMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public ClienteResponseDTO atualizar(@PathVariable UUID id, @RequestBody ClienteRequestDTO cliente) {
+    public ClienteResponseDTO atualizar(@PathVariable UUID id, @RequestBody @Valid ClienteRequestDTO cliente) {
         cliente.setId(id);
         return service.alterar(id, cliente);
     }
