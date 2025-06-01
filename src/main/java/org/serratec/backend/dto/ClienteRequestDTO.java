@@ -15,6 +15,7 @@ public class ClienteRequestDTO {
     @NotBlank(message = "Campo obrigatório")
     private String nome;
     @Pattern(regexp = "\\d{2} ?\\d{4,5}-?\\d{4}", message = "Telefone inválido")
+    @NotBlank(message = "Campo obrigatório")
     private String telefone;
     @Email(message = "E-mail inválido")
     @NotBlank(message = "Campo obrigatório")
