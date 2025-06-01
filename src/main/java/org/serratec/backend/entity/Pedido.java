@@ -2,8 +2,6 @@ package org.serratec.backend.entity;
 import java.time.LocalDateTime;
 import java.util.List;
 import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -17,10 +15,8 @@ public class Pedido {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private LocalDateTime dataPedido;
-    
     private StatusPedido statusPedido;
     private LocalDateTime dataEntregaPedido;
-
 
     /**
      * Varios pedidos
@@ -85,7 +81,4 @@ public class Pedido {
         this.dataEntregaPedido = dataEntregaPedido;
     }
 
-    public List<ItemPedido> getItemPedidos() {
-        return itemPedidos;
-    }
 }

@@ -1,6 +1,5 @@
 package org.serratec.backend.service;
 
-import org.serratec.backend.dto.ProdutoResponseDTO;
 import org.serratec.backend.entity.Produto;
 import org.serratec.backend.repository.ProdutoRepository;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -3,7 +3,7 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import java.math.BigDecimal;
 
-public class ProdutoDTO {
+public class ProdutoResponseDTO {
     @NotNull
     private Long id;
 
@@ -24,10 +24,10 @@ public class ProdutoDTO {
      * os atributos
      */
 
-    public ProdutoDTO(){
+    public ProdutoResponseDTO(){
     }
 
-    public ProdutoDTO(Long id, String nomeProduto, String descricaoProduto, BigDecimal valorProduto) {
+    public ProdutoResponseDTO(Long id, String nomeProduto, String descricaoProduto, BigDecimal valorProduto) {
         this.id = id;
         this.nomeProduto = nomeProduto;
         this.descricaoProduto = descricaoProduto;
