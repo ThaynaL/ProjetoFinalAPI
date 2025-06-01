@@ -16,20 +16,18 @@ public class EnderecoService {
     @Autowired
     private EnderecoRepository repository;
 
-    public EnderecoResponseDTO buscarCep(String cep) {
-        var endereco = Optional.ofNullable(repository.findByCep(cep));
-        if(endereco.isPresent()) {
-           return new EnderecoResponseDTO(endereco.get());
-        }else{
-           RestTemplate restTemplate = new RestTemplate();
-           String url = "https://viacep.com.br/ws/"+cep+"/json/";
-           Optional<Endereco> enderecoViaCep = Optional.ofNullable(restTemplate.getForObject(url, Endereco.class));
-
-           if (enderecoViaCep.isPresent()) {
-               String cepSemFormatacao = enderecoViaCep.get().getCep().replace("-", "");
-               enderecoViaCep.get().setCep(cepSemFormatacao);
-               return inserir(enderecoViaCep.get());
-           }
+    public Endereco buscarCep(String cep) {
+        String cepSemFormatacao = cep.replace("-", "");
+        var endereco = Optional.ofNullable(repository.findByCep(cepSemFormatacao));
+        if (endereco.isPresent()) {
+            return endereco.get();
+        }
+        RestTemplate restTemplate = new RestTemplate();
+        String url = "https://viacep.com.br/ws/" + cepSemFormatacao + "/json/";
+        Endereco enderecoViaCep = restTemplate.getForObject(url, Endereco.class);
+        if (enderecoViaCep != null) {
+            enderecoViaCep.setCep(cepSemFormatacao);
+            return enderecoViaCep;
         }
         throw new HttpClientErrorException(HttpStatus.NOT_FOUND);
     }
@@ -39,18 +37,12 @@ public class EnderecoService {
     }
 
     public Endereco criarEnderecoPorCep(String cep) {
-        Optional<Endereco> endereco = Optional.ofNullable(repository.findByCep(cep));
-        return endereco.orElseGet( () -> {
-            EnderecoResponseDTO endDTO = buscarCep(cep);
-            Endereco enderecoEntity = new Endereco();
-            enderecoEntity.setCep(endDTO.cep());
-            enderecoEntity.setLogradouro(endDTO.logradouro());
-            enderecoEntity.setBairro(endDTO.bairro());
-            enderecoEntity.setLocalidade(endDTO.localidade());
-            enderecoEntity.setUf(endDTO.uf());
+        String cepSemFormatacao = cep.replace("-", "");
+        Optional<Endereco> endereco = Optional.ofNullable(repository.findByCep(cepSemFormatacao));
+
+        return endereco.orElseGet(() -> {
+            Endereco enderecoEntity = buscarCep(cepSemFormatacao);
             return repository.save(enderecoEntity);
         });
     }
-
-
 }
