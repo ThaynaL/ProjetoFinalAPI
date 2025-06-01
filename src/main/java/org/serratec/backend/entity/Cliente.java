@@ -29,8 +29,8 @@ public class Cliente {
                 "Telefone: " + telefone + "\n" +
                 "E-mail: " + email + "\n" +
                 "CPF: " + cpf + "\n" +
-                "Endereco: " + endereco
-//                ", Pedidos: " + pedidos + '\'' +
+                "Endereco: " + endereco + "\n" +
+                "Pedidos: " + pedidos
                 ;
     }
 
