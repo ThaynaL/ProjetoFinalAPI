@@ -19,9 +19,9 @@ public class Cliente {
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "id_endereco")
     private Endereco endereco;
-    
-//    @OneToMany(mappedBy = "pedido")
-//    private List<Pedido> pedidos;
+
+    @OneToMany(mappedBy = "cliente")
+    private List<Pedido> pedidos;
 
     @Override
     public String toString() {
@@ -82,9 +82,9 @@ public class Cliente {
         this.cpf = cpf;
     }
 
-//    public List<Pedido> getPedidos() {
-//        return pedidos;
-//    }
+    public List<Pedido> getPedidos() {
+        return pedidos;
+    }
 
     public Endereco getEndereco() {
         return endereco;
