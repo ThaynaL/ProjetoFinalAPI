@@ -6,6 +6,7 @@ import org.serratec.backend.dto.EnderecoResponseDTO;
 import org.serratec.backend.entity.Cliente;
 import org.serratec.backend.entity.Endereco;
 import org.serratec.backend.entity.Pedido;
+import org.serratec.backend.exception.ClienteException;
 import org.serratec.backend.repository.ClienteRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -35,45 +36,47 @@ public class ClienteService {
     //Get
     public List<ClienteResponseDTO> listar() {
        List<Cliente> clientes = repository.findAll();
-       return clientes.stream().map(cliente -> new ClienteResponseDTO(cliente)).collect(Collectors.toList());
+       return clientes.stream().map(ClienteResponseDTO::new).collect(Collectors.toList());
     }
 
     //Delete
     public void deletar(UUID clienteId) {
         if (!repository.existsById(clienteId)) {
-            //throw new ContaException("Id não encontrado");
+            throw new ClienteException("Id não encontrado");
         }
         repository.deleteById(clienteId);
     }
 
     //Post
     public ClienteResponseDTO inserir(ClienteRequestDTO cliente) {
-//        repository.findByEmail(cliente.getEmail())
-//                .isPresent(c -> throw new ContaException("Email já cadastrado!"));
+        Optional<Cliente> optionalCliente = repository.findByEmail(cliente.getEmail());
+        if (optionalCliente.isPresent()) {
+            throw new ClienteException("Email já cadastrado!");
+        }
 
         Endereco endereco = enderecoService.criarEnderecoPorCep(cliente.getCep());
 
-        Cliente clienteSalvo = new Cliente();
-        clienteSalvo.setNome(cliente.getNome());
-        clienteSalvo.setEmail(cliente.getEmail());
-        clienteSalvo.setCpf(cliente.getCpf());
-        clienteSalvo.setTelefone(cliente.getTelefone());
-        clienteSalvo.setSenha(passwordEncoder.encode(cliente.getSenha()));
-        clienteSalvo.setEndereco(endereco);
+        Cliente clienteSalvar = new Cliente();
+        clienteSalvar.setNome(cliente.getNome());
+        clienteSalvar.setEmail(cliente.getEmail());
+        clienteSalvar.setCpf(cliente.getCpf());
+        clienteSalvar.setTelefone(cliente.getTelefone());
+        clienteSalvar.setSenha(passwordEncoder.encode(cliente.getSenha()));
+        clienteSalvar.setEndereco(endereco);
 
-        repository.save(clienteSalvo);
+        repository.save(clienteSalvar);
 
-        mailConfig.enviar(clienteSalvo.getEmail(), "Confirmação de cadastro", clienteSalvo.toString());
+        mailConfig.enviar(clienteSalvar.getEmail(), "Confirmação de cadastro", clienteSalvar.toString());
 
-        return new ClienteResponseDTO(clienteSalvo);
+        return new ClienteResponseDTO(clienteSalvar);
     }
 
     //Put
     public ClienteResponseDTO alterar(UUID id, ClienteRequestDTO dto) {
         Optional<Cliente> optionalCliente = repository.findById(id);
-//        if (optionalCliente.isEmpty()) {
-//            throw new ContaException("Cliente não encontrado!");
-//        }
+        if (optionalCliente.isEmpty()) {
+            throw new ClienteException("Cliente não encontrado!");
+        }
         Cliente clienteExistente = optionalCliente.get();
 
         clienteExistente.setNome(dto.getNome());
