@@ -13,6 +13,14 @@ import jakarta.persistence.ManyToOne;
  * itemPedido
  */
 
+
+/**
+ * Inclui na classe para
+ * poder calcular em pedidservice
+ * os atributos
+ * valorVenda e valorUnitario
+ */
+
 @Entity
 public class ItemPedido {
     @Id
@@ -21,6 +29,7 @@ public class ItemPedido {
     private Double descontoPercentual;
     private Integer quantidade;
     private BigDecimal valorVenda;
+    private BigDecimal valorUnitario;
 
     @ManyToOne
     @JoinColumn(name = "id_produto")
@@ -29,7 +38,11 @@ public class ItemPedido {
     @ManyToOne
     @JoinColumn(name = "id_pedido")
     private Pedido pedido;
-    
+
+    public ItemPedido() {
+        this.valorUnitario = valorUnitario;
+    }
+
     public Long getId() {
         return id;
     }
@@ -46,7 +59,7 @@ public class ItemPedido {
         this.descontoPercentual = descontoPercentual;
     }
 
-    public Integer getQuantidade() {
+    public BigDecimal getQuantidade() {
         return quantidade;
     }
 
@@ -77,4 +90,11 @@ public class ItemPedido {
 	public void setPedido(Pedido pedido) {
 		this.pedido = pedido;
 	}
+
+    public void setValorUnitario(BigDecimal valorUnitario) {
+    }
+
+    public BigDecimal getValorUnitario() {
+        return valorUnitario;
+    }
 }

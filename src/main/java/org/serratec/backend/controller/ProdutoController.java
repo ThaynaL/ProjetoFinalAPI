@@ -1,110 +1,58 @@
 package org.serratec.backend.controller;
 import jakarta.validation.Valid;
-import org.eclipse.angus.mail.imap.protocol.ID;
+import org.serratec.backend.dto.PedidoRequestDTO;
+import org.serratec.backend.dto.PedidoResponseDTO;
+import org.serratec.backend.dto.ProdutoRequestDTO;
 import org.serratec.backend.dto.ProdutoResponseDTO;
-import org.serratec.backend.entity.Produto;
-import org.serratec.backend.repository.ProdutoRepository;
-
-import org.springframework.beans.BeanUtils;
+import org.serratec.backend.service.PedidoService;
+import org.serratec.backend.service.ProdutoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
 
-import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
-import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
-
-/**
- * Todos os imports usados
- * acima
- */
-
 @RestController
+@RequestMapping("/produtos")
 public class ProdutoController {
 
     @Autowired
-    ProdutoRepository produtoRepository;
+    private ProdutoService produtoService;
 
     /**
-     * PostMapping /products
-     * Enviando produtos para o banco de dados
+     * A funcao @beanutils.copyproperties
+     * vai copiar os dados do pedidoDTO para o pedido
      */
+
+    @GetMapping
+    public ResponseEntity<List<ProdutoResponseDTO>> listarTodosProdutos(){
+        return ResponseEntity.status(HttpStatus.OK).body(produtoService.listarProdutos());
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<ProdutoResponseDTO> buscarPorId(@PathVariable Long id) {
+        return produtoService.listarProdutos(id);
+    }
 
     @PostMapping("/produtos")
-    public ResponseEntity<Produto> saveProduct(@RequestBody @Valid ProdutoResponseDTO produtoResponseDTO) {
-        var produto = new Produto();
-        BeanUtils.copyProperties(produtoResponseDTO, produto);
-        return ResponseEntity.status(HttpStatus.CREATED).body(ProdutoRepository.save(produto));
+    public ResponseEntity<ProdutoResponseDTO> cadastrarProduto(@RequestBody @Valid ProdutoRequestDTO produtoRequestDTO) {
+        return new ResponseEntity<>(produtoService.cadastrarProduto(produtoDTO), HttpStatus.CREATED);
     }
-
-    /**
-     * GetMapping /products
-     * Buscando os produtos
-     * em banco de dados
-     */
-
-    @GetMapping("/produtos")
-    public ResponseEntity<List<Produto>> getAllProducts(){
-        List<Produto> productsList = ProdutoRepository.findAll();
-        if(!productsList.isEmpty()){
-            for(Produto produto : produtoList){
-                ID id = produto.getId();
-                produto.add(linkTo(methodOn(ProdutoController.class).getOneProduct(id)).withSelfRel());
-            }
-        }
-        return ResponseEntity.status(HttpStatus.OK).body(productsList);
-    }
-
-    /**
-     * @GetMapping /products/{id}
-     * Buscar produto em banco
-     * que seja por ID
-     */
-
-    @GetMapping("/produtos/{id}")
-    public ResponseEntity<Produto> getOneProduto(@PathVariable(value="id") ID id){
-        Optional<Produto> produtoObj = produtoRepository.findById(id);
-        if (produtoObj.isEmpty()) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Produto nao foi encontrado.");
-        }
-        produtoObj.get().add(linkTo(methodOn(ProductController.class).getOneProduct(id)).withSelfRel());
-        return ResponseEntity.status(HttpStatus.OK).body(produtoObj);
-    }
-
-    /**
-     * Atualizacao do produto
-     * em banco, buscando
-     * pelo ID
-     */
 
     @PutMapping({"/produtos/{id}"})
-    public ResponseEntity<Produto> updateProduto(@PathVariable(value="id") ID id,
-                                                @RequestBody @Valid ProdutoResponseDTO produtoResponseDTO){
-        Optional<Produto> produtoObj = produtoRepository.findById(id);
-        if (produtoObj.isEmpty()) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Produto nao foi encontrado.");
-        }
-        var productModel = produtoObj.get();
-        BeanUtils.copyProperties(produtoResponseDTO, "id");
-        return ResponseEntity.status(HttpStatus.OK).body(produtoRepository.save(productModel));
+    public ResponseEntity<PedidoResponseDTO> atualizarProduto(@PathVariable(value="id") UUID id,
+                                                             @RequestBody @Valid ProdutoRequestDTO produtoDTO){
+        return ResponseEntity.status(HttpStatus.OK).body(produtoService.atualizarProduto(id, produtoDTO));
     }
 
-    /**
-     * Deletando produto
-     * em banco, buscando pelo ID
-     */
 
-    @DeleteMapping({"/products/{id}"})
-    public ResponseEntity<Object> deleteProduct(@PathVariable(value="id") UUID id){
-        Optional<ProductModel> productO = productRepository.findById(id);
-        if(productO.isEmpty()){
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Product not found.");
-        }
-        productRepository.delete(productO.get());
-        return ResponseEntity.status(HttpStatus.OK).body("Product deleted successfully.");
+    @DeleteMapping({"/produtos/{id}"})
+    public ResponseEntity<Object> deletarProduto(@PathVariable(value="id") UUID id){
+        produtoService.deletarProduto(id);
+        return ResponseEntity.status(HttpStatus.OK).body("Produto deletado com sucesso. ");
     }
+
 
 }
