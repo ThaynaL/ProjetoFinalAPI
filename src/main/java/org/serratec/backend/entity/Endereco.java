@@ -1,19 +1,26 @@
 package org.serratec.backend.entity;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 
 @Entity
 public class Endereco {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    @Column(unique = true)
     private String cep;
     private String logradouro;
     private String bairro;
     private String localidade;
     private String uf;
+
+    @Override
+    public String toString() {
+        return "Cep:" + cep +
+                ", logradouro: " + logradouro +
+                ", bairro: " + bairro +
+                ", localidade: " + localidade +
+                ", uf: " + uf ;
+    }
 
     public Long getId() {
         return id;
