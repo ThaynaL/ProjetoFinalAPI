@@ -51,6 +51,9 @@ public class ClienteService {
     public ClienteResponseDTO inserir(ClienteRequestDTO cliente) {
         Optional<Cliente> optionalCliente = repository.findByEmail(cliente.getEmail());
         if (optionalCliente.isPresent()) {
+            if (!optionalCliente.get().getStatus()) {
+                throw new ClienteException("Cliente inativo!");
+            }
             throw new ClienteException("Email já cadastrado!");
         }
 
@@ -77,6 +80,10 @@ public class ClienteService {
         if (optionalCliente.isEmpty()) {
             throw new ClienteException("Cliente não encontrado!");
         }
+
+        if (!optionalCliente.get().getStatus()){
+            throw new ClienteException("Cliente inativo!");
+        }
         Cliente clienteExistente = optionalCliente.get();
 
         clienteExistente.setNome(dto.getNome());
@@ -96,13 +103,12 @@ public class ClienteService {
         return new ClienteResponseDTO(repository.save(clienteExistente));
     }
 
-    //Ativar e desativar a conta do cliente, funcionalidade Thayná Lima
     public void ativar(UUID id) {
         Cliente cliente = repository.findById(id)
                 .orElseThrow(() -> new ClienteException("O cliente não foi encontrado."));
 
-        if (cliente.getStatus() == true){
-            throw new ClienteException("Este cliente está ativo!");
+        if (cliente.getStatus()) {
+            throw new ClienteException("Este cliente já está ativo!");
         }
 
         cliente.setStatus(true);
@@ -113,11 +119,12 @@ public class ClienteService {
         Cliente cliente = repository.findById(id)
                 .orElseThrow(() -> new ClienteException("O cliente não foi encontrado."));
 
-        if (cliente.getStatus() == true){
-            throw new ClienteException("Este cliente está desativado!");
+        if (!cliente.getStatus()) {
+            throw new ClienteException("Este cliente já está desativado!");
         }
 
         cliente.setStatus(false);
         repository.save(cliente);
     }
+
 }
