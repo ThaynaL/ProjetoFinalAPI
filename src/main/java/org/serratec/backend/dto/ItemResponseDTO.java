@@ -6,7 +6,7 @@ import org.serratec.backend.entity.Produto;
 import java.math.BigDecimal;
 
 
-public class ItemDTO {
+public class ItemResponseDTO {
     private ProdutoResponseDTO produtoResponseDTO;
     private PedidoResponseDTO pedidoResponseDTO;
     private Integer quantidade;
@@ -14,10 +14,10 @@ public class ItemDTO {
     private BigDecimal valorUnitario;
     private Double descontoPercentual;
 
-    public ItemDTO() {
+    public ItemResponseDTO() {
     }
 
-    public ItemDTO(ItemPedido itemPedido) {
+    public ItemResponseDTO(ItemPedido itemPedido) {
         //this.produtoResponseDTO = itemPedido.getId().getProduto().toProdutoResponseDTO();
         //this.pedidoResponseDTO = itemPedido.getId().getPedido().toPedidoResponseDTO();
         this.quantidade = itemPedido.getQuantidade();

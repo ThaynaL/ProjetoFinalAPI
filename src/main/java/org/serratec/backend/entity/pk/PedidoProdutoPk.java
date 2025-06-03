@@ -1,17 +1,23 @@
 package org.serratec.backend.entity.pk;
 
 
-import jakarta.persistence.*;
+import java.io.Serializable;
+import java.util.Objects;
+
 import org.serratec.backend.entity.Pedido;
 import org.serratec.backend.entity.Produto;
 
-import java.io.Serializable;
-import java.util.Objects;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
+import jakarta.persistence.Embeddable;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 
 
 @Embeddable
 public class PedidoProdutoPk implements Serializable {
     private static final long serialVersionUID = 1L;
+    
     @ManyToOne
     @JoinColumn(name = "id_pedido")
     private Pedido pedido;
@@ -20,6 +26,7 @@ public class PedidoProdutoPk implements Serializable {
     @JoinColumn(name = "id_produto")
     private Produto produto;
 
+    @JsonIgnore
     public Pedido getPedido() {
         return pedido;
     }
@@ -28,6 +35,7 @@ public class PedidoProdutoPk implements Serializable {
         this.pedido = pedido;
     }
 
+    @JsonIgnore
     public Produto getProduto() {
         return produto;
     }

@@ -1,5 +1,6 @@
 package org.serratec.backend.service;
-import org.serratec.backend.dto.ItemDTO;
+import org.serratec.backend.dto.ItemRequestDTO;
+import org.serratec.backend.dto.ItemResponseDTO;
 import org.serratec.backend.dto.PedidoRequestDTO;
 import org.serratec.backend.dto.PedidoResponseDTO;
 import org.serratec.backend.entity.ItemPedido;
@@ -53,30 +54,50 @@ public class PedidoService {
     }
 
     //delete
-    public void deletarPedido(Long id){
-        if(!pedidoRepository.findById(id).isPresent()){
-            throw new RuntimeException("Pedido informado nao foi encontrado!");
+    public void deletarPedido(Long id) {
+        if (!pedidoRepository.existsById(id)) {
+            throw new RuntimeException("Pedido informado não foi encontrado!");
         }
         pedidoRepository.deleteById(id);
     }
 
-    //post
-    public PedidoResponseDTO criarPedido(PedidoRequestDTO pedidoDTO){
 
+    //post
+    public PedidoResponseDTO criarPedido(PedidoRequestDTO pedidoDTO) {
+
+        // Criar o pedido base
         Pedido pedido = new Pedido();
         pedido.setDataPedido(LocalDateTime.now());
-        pedido.setStatusPedido(StatusPedido.EM_ANDAMENTO);
+        pedido.setStatusPedido(pedidoDTO.getStatusPedido()); // usa o status vindo do DTO
+        pedido.setDataEntregaPedido(pedidoDTO.getDataEntregaPedido());
 
+        // Salva o pedido no banco para gerar o ID
         pedido = pedidoRepository.save(pedido);
-        List<ItemPedido> itenSalvos = new ArrayList<>();
 
-        for (ItemDTO itemDTO : pedidoDTO.getItens()) {
-            Optional<Produto> produto = produtoRepository.findById(itemDTO.getProdutoResponseDTO().getId());
+        // Lista de itens do pedido a serem salvos
+        List<ItemPedido> itensPedido = new ArrayList<>();
 
+        for (ItemRequestDTO itemDTO : pedidoDTO.getItens()) {
+        	Produto produto = produtoRepository.findById(itemDTO.getIdProduto())
+        		    .orElseThrow(() -> new RuntimeException("Produto não encontrado com ID: " + itemDTO.getIdProduto()));
+
+
+            ItemPedido item = new ItemPedido();
+            item.setPedido(pedido); // associa o pedido ao item
+            item.setProduto(produto); // associa o produto ao item
+            item.setQuantidade(itemDTO.getQuantidade());
+            item.setValorUnitario(itemDTO.getValorUnitario());
+            item.setDescontoPercentual(itemDTO.getDescontoPercentual());
+
+            itensPedido.add(item);
         }
-        pedido = pedidoRepository.save(pedido);
+
+        // Salvar todos os itens
+        itemPedidoService.salvarTodos(itensPedido);
+
         return new PedidoResponseDTO(pedido);
     }
+
 
     //put
     public PedidoResponseDTO atualizarPedido(Long id, PedidoRequestDTO dto){
@@ -86,7 +107,7 @@ public class PedidoService {
         pedidoExistente.setDataPedido(LocalDateTime.now());
         pedidoExistente.setStatusPedido(StatusPedido.valueOf("Em_Andamento"));
 
-        for (ItemDTO itemDTO : dto.getItens()) {
+        for (ItemRequestDTO itemDTO : dto.getItens()) {
         }
         pedidoRepository.save(pedidoExistente);
         return new PedidoResponseDTO(pedidoExistente);

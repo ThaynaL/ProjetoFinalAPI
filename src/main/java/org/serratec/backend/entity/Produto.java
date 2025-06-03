@@ -2,6 +2,9 @@ package org.serratec.backend.entity;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
+
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -24,6 +27,7 @@ public class Produto {
     private Categoria categoria;
 
     @OneToMany(mappedBy = "id.produto")
+    @JsonBackReference
     private List<ItemPedido> itemPedidos = new ArrayList<>();
 
     public Long getId() {
