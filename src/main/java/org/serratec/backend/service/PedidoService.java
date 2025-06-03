@@ -26,9 +26,6 @@ public class PedidoService {
     @Autowired
     private PedidoRepository pedidoRepository;
 
-//    @Autowired
-//    private ProdutoRepository produtoRepository;
-
     @Autowired
     private ProdutoService produtoService;
 
@@ -74,7 +71,7 @@ public class PedidoService {
         List<ItemPedido> itenSalvos = new ArrayList<>();
 
         for (ItemDTO itemDTO : pedidoDTO.getItens()) {
-            Optional<Produto> produto = produtoRepository.findById(itemDTO.getProduto().getId());
+            Optional<Produto> produto = produtoRepository.findById(itemDTO.getProdutoResponseDTO().getId());
 
         }
         pedido = pedidoRepository.save(pedido);
