@@ -121,8 +121,14 @@ public class Cliente implements UserDetails{
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return Collections.emptyList(); // sem roles por enquanto
+        Set<GrantedAuthority> authorities = new HashSet<>();
+        for (ClientePerfil perfil : clientePerfis) {
+            String nomeRole = perfil.getPerfil().getNome(); 
+            authorities.add(() -> nomeRole); 
+        }
+        return authorities;
     }
+
 
     @Override
     public boolean isAccountNonExpired() {
