@@ -1,4 +1,26 @@
 package org.serratec.backend.dto;
 
-public record CategoriaResponseDTO(Long id, String nomeCategoria, String descricaoCategoria) {
+import io.swagger.v3.oas.annotations.media.Schema;
+
+public record CategoriaResponseDTO(
+		@Schema(
+		        description = "Identificador único da categoria",
+		        example = "1"
+		    )
+		Long id, 
+		
+		@Schema(
+		        description = "Nome da categoria",
+		        example = "Eletrônicos"
+		    )
+		String nomeCategoria,
+		
+		@Schema(
+		        description = "Descrição da categoria",
+		        example = "Produtos tecnológicos e aparelhos eletrônicos"
+		    )
+		String descricaoCategoria) {
 }
+
+
+

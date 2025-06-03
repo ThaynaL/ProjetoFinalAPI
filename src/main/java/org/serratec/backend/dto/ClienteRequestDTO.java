@@ -14,20 +14,47 @@ import java.util.UUID;
 public class ClienteRequestDTO implements Serializable {
     private static final long serialVersionUID = 1L;
 
+    @Schema(
+            description = "Identificador único do cliente. É gerado automaticamente.",
+            example = "f47ac10b-58cc-4372-a567-0e02b2c3d479"
+    )
     private UUID id;
-    @NotBlank(message = "Campo obrigatório")
+    @Schema(
+            description = "Nome completo do cliente.",
+            example = "Juliana Périco"
+    )@NotBlank(message = "Campo obrigatório")
     private String nome;
+    @Schema(
+            description = "Número de telefone do cliente no formato nacional.",
+            example = "24 98765-4321"
+    )
     @Pattern(regexp = "\\d{2} ?\\d{4,5}-?\\d{4}", message = "Telefone inválido")
     @NotBlank(message = "Campo obrigatório")
     private String telefone;
+    @Schema(
+            description = "Endereço de e-mail do cliente.",
+            example = "juliana.perico@email.com"
+    )
     @Email(message = "E-mail inválido")
     @NotBlank(message = "Campo obrigatório")
     private String email;
+    @Schema(
+            description = "Senha de acesso do cliente.",
+            example = "J123456789"
+    )
     @NotBlank(message = "Campo obrigatório")
     private String senha;
+    @Schema(
+            description = "CPF do cliente. Deve conter apenas números.",
+            example = "12345678909"
+    )
     @CPF(message = "CPF inválido")
     @NotBlank(message = "Campo obrigatório")
     private String cpf;
+    @Schema(
+            description = "CEP do cliente. Deve estar no formato 00000-000 ou 00000000.",
+            example = "25730-365"
+    )
     @Pattern(regexp = "\\d{5}-?\\d{3}", message = "CEP inválido")
     private String cep;
 
