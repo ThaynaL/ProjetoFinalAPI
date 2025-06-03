@@ -1,11 +1,15 @@
 package org.serratec.backend.service;
 import org.serratec.backend.dto.ProdutoRequestDTO;
+import org.serratec.backend.dto.ProdutoResponseDTO;
 import org.serratec.backend.entity.Produto;
 import org.serratec.backend.repository.ProdutoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class ProdutoService {
@@ -13,32 +17,33 @@ public class ProdutoService {
     @Autowired
     private ProdutoRepository produtoRepository;
 
-    /**
-     * Cadastrando produto no sistema
-     */
-
-    public Produto cadastrarProduto(ProdutoRequestDTO dto){
+    public ProdutoResponseDTO cadastrarProduto(ProdutoRequestDTO dto){
         Produto produto = new Produto();
         produto.setNomeProduto(dto.getNomeProduto());
         produto.setDescricaoProduto(dto.getDescricaoProduto());
         produto.setValorProduto(dto.getValorProduto());
-        return produtoRepository.save(produto);
+        produtoRepository.save(produto);
+        return new ProdutoResponseDTO(produto);
     }
 
-    /**
-     * Listar todos os produtos
-     */
-
-    public List<Produto> listarProdutos(){
-        return produtoRepository.findAll();
+    public List<ProdutoResponseDTO> listarProdutos(){
+        List<Produto> produtos = produtoRepository.findAll();
+        List<ProdutoResponseDTO> produtosDTO =new ArrayList<>();
+        for (Produto produto : produtos) {
+            produtosDTO.add(new ProdutoResponseDTO(produto));
+        }
+        return produtosDTO;
     }
 
-    /**
-     * Busca o produto por id
-     */
 
-    public Optional<Produto> buscarPorId(Long id){
-        return produtoRepository.findById(id);
+    public ProdutoResponseDTO buscarPorId(Long id){
+        Optional<Produto> produto = produtoRepository.findById(id);
+        if(produto.isPresent()){
+            Produto pdt = produto.get();
+            return new ProdutoResponseDTO(pdt);
+        }else{
+            throw new RuntimeException("Produto informado nao foi encontrado!");
+        }
     }
 
     /**
@@ -46,13 +51,14 @@ public class ProdutoService {
      * por ID
      */
 
-    public Produto atualizarProduto(Long id, ProdutoRequestDTO dto){
+    public ProdutoResponseDTO atualizarProduto(Long id, ProdutoRequestDTO dto){
         Produto produtoExistente = produtoRepository.findById(id).orElseThrow(()
                 -> new RuntimeException("Produto informado nao foi encontrado!"));
         produtoExistente.setNomeProduto(dto.getNomeProduto());
         produtoExistente.setDescricaoProduto(dto.getDescricaoProduto());
         produtoExistente.setValorProduto(dto.getValorProduto());
-        return produtoRepository.save(produtoExistente);
+        produtoRepository.save(produtoExistente);
+        return new ProdutoResponseDTO(produtoExistente);
     }
     /**
      * Deletor produto

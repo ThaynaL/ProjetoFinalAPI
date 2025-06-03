@@ -1,53 +1,39 @@
 package org.serratec.backend.entity;
+
 import java.math.BigDecimal;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
 
-/**
- * A classe VENDA
- * foi alterada para
- * itemPedido
- */
-
-
-/**
- * Inclui na classe para
- * poder calcular em pedidservice
- * os atributos
- * valorVenda e valorUnitario
- */
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import jakarta.persistence.*;
+import org.serratec.backend.entity.pk.PedidoProdutoPk;
 
 @Entity
 public class ItemPedido {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+
+    @EmbeddedId
+    private PedidoProdutoPk id = new PedidoProdutoPk();
+
     private Double descontoPercentual;
     private Integer quantidade;
-    private BigDecimal valorVenda;
     private BigDecimal valorUnitario;
 
-    @ManyToOne
-    @JoinColumn(name = "id_produto")
-    private Produto produto;
-    
-    @ManyToOne
-    @JoinColumn(name = "id_pedido")
-    private Pedido pedido;
-
     public ItemPedido() {
+    }
+
+    public ItemPedido(Produto produto, Pedido pedido,
+                      Double descontoPercentual, Integer quantidade,
+                      BigDecimal valorUnitario) {
+        id.setProduto(produto);
+        id.setPedido(pedido);
+        this.descontoPercentual = descontoPercentual;
+        this.quantidade = quantidade;
         this.valorUnitario = valorUnitario;
     }
 
-    public Long getId() {
+    public PedidoProdutoPk getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(PedidoProdutoPk id) {
         this.id = id;
     }
 
@@ -59,7 +45,7 @@ public class ItemPedido {
         this.descontoPercentual = descontoPercentual;
     }
 
-    public BigDecimal getQuantidade() {
+    public Integer getQuantidade() {
         return quantidade;
     }
 
@@ -67,34 +53,11 @@ public class ItemPedido {
         this.quantidade = quantidade;
     }
 
-    public BigDecimal getValorVenda() {
-        return valorVenda;
-    }
-
-    public void setValorVenda(BigDecimal valorVenda) {
-        this.valorVenda = valorVenda;
-    }
-
-	public Produto getProduto() {
-		return produto;
-	}
-
-	public void setProduto(Produto produto) {
-		this.produto = produto;
-	}
-
-	public Pedido getPedido() {
-		return pedido;
-	}
-
-	public void setPedido(Pedido pedido) {
-		this.pedido = pedido;
-	}
-
-    public void setValorUnitario(BigDecimal valorUnitario) {
-    }
-
     public BigDecimal getValorUnitario() {
         return valorUnitario;
+    }
+
+    public void setValorUnitario(BigDecimal valorUnitario) {
+        this.valorUnitario = valorUnitario;
     }
 }

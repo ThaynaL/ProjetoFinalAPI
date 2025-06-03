@@ -7,10 +7,13 @@ import jakarta.validation.constraints.Pattern;
 import org.hibernate.validator.constraints.br.CPF;
 import org.serratec.backend.entity.Cliente;
 
+import java.io.Serializable;
 import java.util.UUID;
 
 
-public class ClienteRequestDTO {
+public class ClienteRequestDTO implements Serializable {
+    private static final long serialVersionUID = 1L;
+
     private UUID id;
     @NotBlank(message = "Campo obrigatório")
     private String nome;

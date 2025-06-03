@@ -7,6 +7,8 @@ import java.util.UUID;
 
 public interface PedidoRepository extends JpaRepository<Pedido, Long> {
     List<Pedido> id(Long id);
+    /**
     boolean findById(UUID id);
     void deleteById(UUID id);
+     */
 }

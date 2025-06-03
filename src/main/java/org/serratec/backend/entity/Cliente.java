@@ -1,9 +1,20 @@
 package org.serratec.backend.entity;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 
 import jakarta.persistence.*;
+
+
+/**
+ * Adicionado o atributo e seus getters e setters
+ * dataNascimento para podermos
+ * fazer a campanha de
+ * envio de promocao para o cliente
+ */
+
+
 
 @Entity
 public class Cliente {
@@ -15,6 +26,7 @@ public class Cliente {
     private String email;
     private String senha;
     private String cpf;
+    private LocalDateTime dataNascimento;
 
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "id_endereco")
@@ -92,5 +104,13 @@ public class Cliente {
 
     public void setEndereco(Endereco endereco) {
         this.endereco = endereco;
+    }
+
+    public LocalDateTime getDataNascimento() {
+        return dataNascimento;
+    }
+
+    public void setDataNascimento(LocalDateTime dataNascimento) {
+        this.dataNascimento = dataNascimento;
     }
 }
