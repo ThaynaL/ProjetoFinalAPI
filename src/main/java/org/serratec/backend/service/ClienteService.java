@@ -69,7 +69,7 @@ public class ClienteService {
 
         repository.save(clienteSalvar);
 
-        mailConfig.enviar(clienteSalvar.getEmail(), "Confirmação de cadastro", clienteSalvar.toString());
+        //mailConfig.enviar(clienteSalvar.getEmail(), "Confirmação de cadastro", clienteSalvar.toString());
 
         return new ClienteResponseDTO(clienteSalvar);
     }

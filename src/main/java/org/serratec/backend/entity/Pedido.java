@@ -1,7 +1,14 @@
 package org.serratec.backend.entity;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
+
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -15,21 +22,21 @@ public class Pedido {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private LocalDateTime dataPedido;
+
+    @Enumerated(EnumType.STRING)
     private StatusPedido statusPedido;
     private LocalDateTime dataEntregaPedido;
-
-    /**
-     * Varios pedidos
-     * podem ser de um
-     * determinado cliente
-     * @manytoone
-     */
-
 
     @ManyToOne
     @JoinColumn(name = "id_cliente")
     private Cliente cliente;
-    
+
+    @OneToMany(mappedBy = "id.pedido", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonManagedReference
+    private List<ItemPedido> itemPedidos = new ArrayList<>();
+
+
+
     public Cliente getCliente() {
 		return cliente;
 	}
@@ -45,9 +52,6 @@ public class Pedido {
 	public void setItemPedidos(List<ItemPedido> itemPedidos) {
 		this.itemPedidos = itemPedidos;
 	}
-
-	@OneToMany(mappedBy = "pedido")
-    private List<ItemPedido> itemPedidos;
     
     public Long getId() {
         return id;

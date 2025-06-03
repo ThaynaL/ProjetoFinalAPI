@@ -1,40 +1,39 @@
 package org.serratec.backend.entity;
-import java.math.BigDecimal;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
 
-/**
- * A classe VENDA
- * foi alterada para
- * itemPedido
- */
+import java.math.BigDecimal;
+
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import jakarta.persistence.*;
+import org.serratec.backend.entity.pk.PedidoProdutoPk;
 
 @Entity
 public class ItemPedido {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+
+    @EmbeddedId
+    private PedidoProdutoPk id = new PedidoProdutoPk();
+
     private Double descontoPercentual;
     private Integer quantidade;
-    private BigDecimal valorVenda;
+    private BigDecimal valorUnitario;
 
-    @ManyToOne
-    @JoinColumn(name = "id_produto")
-    private Produto produto;
-    
-    @ManyToOne
-    @JoinColumn(name = "id_pedido")
-    private Pedido pedido;
-    
-    public Long getId() {
+    public ItemPedido() {
+    }
+
+    public ItemPedido(Produto produto, Pedido pedido,
+                      Double descontoPercentual, Integer quantidade,
+                      BigDecimal valorUnitario) {
+        id.setProduto(produto);
+        id.setPedido(pedido);
+        this.descontoPercentual = descontoPercentual;
+        this.quantidade = quantidade;
+        this.valorUnitario = valorUnitario;
+    }
+
+    public PedidoProdutoPk getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(PedidoProdutoPk id) {
         this.id = id;
     }
 
@@ -54,27 +53,29 @@ public class ItemPedido {
         this.quantidade = quantidade;
     }
 
-    public BigDecimal getValorVenda() {
-        return valorVenda;
+    public BigDecimal getValorUnitario() {
+        return valorUnitario;
     }
 
-    public void setValorVenda(BigDecimal valorVenda) {
-        this.valorVenda = valorVenda;
+    public void setValorUnitario(BigDecimal valorUnitario) {
+        this.valorUnitario = valorUnitario;
+    }
+    
+    @JsonBackReference
+    public Pedido getPedido() {
+        return id.getPedido();
     }
 
-	public Produto getProduto() {
-		return produto;
-	}
+    public void setPedido(Pedido pedido) {
+        id.setPedido(pedido);
+    }
 
-	public void setProduto(Produto produto) {
-		this.produto = produto;
-	}
+    public Produto getProduto() {
+        return id.getProduto();
+    }
 
-	public Pedido getPedido() {
-		return pedido;
-	}
+    public void setProduto(Produto produto) {
+        id.setProduto(produto);
+    }
 
-	public void setPedido(Pedido pedido) {
-		this.pedido = pedido;
-	}
 }
