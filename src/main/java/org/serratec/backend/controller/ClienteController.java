@@ -41,4 +41,16 @@ public class ClienteController {
         service.deletar(id);
         return ResponseEntity.noContent().build();
     }
+
+    @DeleteMapping("ativar/{id}")
+    public ResponseEntity<Void> ativar(@PathVariable UUID id) {
+        service.ativar(id);
+        return ResponseEntity.noContent().build();
+    }
+
+    @DeleteMapping("desativar/{id}")
+    public ResponseEntity<Void> desativar(@PathVariable UUID id) {
+        service.desativar(id);
+        return ResponseEntity.noContent().build();
+    }
 }
