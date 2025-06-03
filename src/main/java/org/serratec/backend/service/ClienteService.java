@@ -4,14 +4,19 @@ import org.serratec.backend.dto.ClienteRequestDTO;
 import org.serratec.backend.dto.ClienteResponseDTO;
 import org.serratec.backend.dto.EnderecoResponseDTO;
 import org.serratec.backend.entity.Cliente;
+import org.serratec.backend.entity.ClientePerfil;
 import org.serratec.backend.entity.Endereco;
 import org.serratec.backend.entity.Pedido;
 import org.serratec.backend.exception.ClienteException;
+import org.serratec.backend.repository.ClientePerfilRepository;
 import org.serratec.backend.repository.ClienteRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import jakarta.transaction.Transactional;
+
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -33,6 +38,12 @@ public class ClienteService {
     @Autowired
     private MailConfig mailConfig;
 
+    @Autowired
+    private ClientePerfilRepository clientePerfilRepository;
+    
+    @Autowired
+    private PerfilService perfilService;
+    
     //Get
     public List<ClienteResponseDTO> listar() {
        List<Cliente> clientes = repository.findAll();
@@ -48,6 +59,7 @@ public class ClienteService {
     }
 
     //Post
+    @Transactional
     public ClienteResponseDTO inserir(ClienteRequestDTO cliente) {
         Optional<Cliente> optionalCliente = repository.findByEmail(cliente.getEmail());
         if (optionalCliente.isPresent()) {
@@ -64,9 +76,15 @@ public class ClienteService {
         clienteSalvar.setSenha(passwordEncoder.encode(cliente.getSenha()));
         clienteSalvar.setEndereco(endereco);
 
+        for (ClientePerfil up : cliente.getClientePerfis()){
+            up.setPerfil(perfilService.buscar(up.getPerfil().getId()));
+            up.setCliente(clienteSalvar);
+            up.setDataCriacao(LocalDate.now());
+        }
         repository.save(clienteSalvar);
+        clientePerfilRepository.saveAll(cliente.getClientePerfis());
 
-        mailConfig.enviar(clienteSalvar.getEmail(), "Confirmação de cadastro", clienteSalvar.toString());
+        //mailConfig.enviar(clienteSalvar.getEmail(), "Confirmação de cadastro", clienteSalvar.toString());
 
         return new ClienteResponseDTO(clienteSalvar);
     }

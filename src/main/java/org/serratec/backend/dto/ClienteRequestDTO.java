@@ -1,13 +1,16 @@
 package org.serratec.backend.dto;
 
-import jakarta.persistence.Entity;
+import java.util.HashSet;
+import java.util.Set;
+import java.util.UUID;
+
+import org.hibernate.validator.constraints.br.CPF;
+import org.serratec.backend.entity.Cliente;
+import org.serratec.backend.entity.ClientePerfil;
+
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
-import org.hibernate.validator.constraints.br.CPF;
-import org.serratec.backend.entity.Cliente;
-
-import java.util.UUID;
 
 
 public class ClienteRequestDTO {
@@ -91,4 +94,13 @@ public class ClienteRequestDTO {
 
     public ClienteRequestDTO() {
     }
+    private Set<ClientePerfil> clientePerfis = new HashSet<>();
+
+	public Set<ClientePerfil> getClientePerfis() {
+		return clientePerfis;
+	}
+
+	public void setClientePerfis(Set<ClientePerfil> clientePerfis) {
+		this.clientePerfis = clientePerfis;
+	}
 }
