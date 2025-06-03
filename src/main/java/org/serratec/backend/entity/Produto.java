@@ -5,6 +5,7 @@ import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -26,7 +27,7 @@ public class Produto {
     @JoinColumn(name = "id_categoria")
     private Categoria categoria;
 
-    @OneToMany(mappedBy = "id.produto")
+    @OneToMany(mappedBy = "id.produto", cascade = CascadeType.REMOVE, orphanRemoval = true)
     @JsonBackReference
     private List<ItemPedido> itemPedidos = new ArrayList<>();
 

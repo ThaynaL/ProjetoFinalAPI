@@ -21,6 +21,17 @@ public class ProdutoRequestDTO implements Serializable {
     @Positive(message = "O campo valor deve ser maior que zero!")
     private BigDecimal valorProduto ;
 
+    @NotNull(message = "O campo idCategoria deve ser preenchido!")
+    private Long idCategoria;
+
+    public Long getIdCategoria() {
+        return idCategoria;
+    }
+
+    public void setIdCategoria(Long idCategoria) {
+        this.idCategoria = idCategoria;
+    }
+
     public ProdutoRequestDTO(){
     }
 
@@ -29,10 +40,11 @@ public class ProdutoRequestDTO implements Serializable {
      * UsuarioRequestDTO.
      */
 
-    public ProdutoRequestDTO(String nomeProduto, String descricaoProduto, BigDecimal valorProduto) {
+    public ProdutoRequestDTO(String nomeProduto, String descricaoProduto, BigDecimal valorProduto, Long idCategoria) {
         this.nomeProduto = nomeProduto;
         this.descricaoProduto = descricaoProduto;
         this.valorProduto = valorProduto;
+        this.idCategoria = idCategoria;
     }
 
     public String getNomeProduto() {
