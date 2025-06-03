@@ -3,6 +3,7 @@ package org.serratec.backend.dto;
 import org.serratec.backend.entity.Cliente;
 import io.swagger.v3.oas.annotations.media.Schema;
 
+import java.time.LocalDate;
 import java.util.UUID;
 
 public class ClienteResponseDTO {
@@ -17,6 +18,11 @@ public class ClienteResponseDTO {
     private String email;
 	@Schema(description = "CPF do cliente (somente números).", example = "12345678909") 
     private String cpf;
+    private LocalDate dataNascimento;
+
+    public Integer getMesAniversario() {
+        return (dataNascimento !=null) ? dataNascimento.getMonthValue() : null;
+    }
 
     public ClienteResponseDTO(Cliente cliente) {
         this.id = cliente.getIdUuid();
@@ -44,5 +50,9 @@ public class ClienteResponseDTO {
 
     public String getCpf() {
         return cpf;
+    }
+
+    public LocalDate getDataNascimento() {
+        return dataNascimento;
     }
 }
