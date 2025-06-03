@@ -95,4 +95,29 @@ public class ClienteService {
         mailConfig.atualizar(clienteExistente.getEmail(), "Alteração de cadastro", clienteExistente.toString());
         return new ClienteResponseDTO(repository.save(clienteExistente));
     }
+
+    //Ativar e desativar a conta do cliente, funcionalidade Thayná Lima
+    public void ativar(UUID id) {
+        Cliente cliente = repository.findById(id)
+                .orElseThrow(() -> new ClienteException("O cliente não foi encontrado."));
+
+        if (cliente.getStatus() == true){
+            throw new ClienteException("Este cliente está ativo!");
+        }
+
+        cliente.setStatus(true);
+        repository.save(cliente);
+    }
+
+    public void desativar(UUID id) {
+        Cliente cliente = repository.findById(id)
+                .orElseThrow(() -> new ClienteException("O cliente não foi encontrado."));
+
+        if (cliente.getStatus() == true){
+            throw new ClienteException("Este cliente está desativado!");
+        }
+
+        cliente.setStatus(false);
+        repository.save(cliente);
+    }
 }
