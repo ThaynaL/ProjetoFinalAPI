@@ -31,14 +31,3 @@ build/
 
 ### VS Code ###
 .vscode/
-
-
-# Eclipse 
-.metadata/
-*.log
-
-### H2 ###
-h2/projetoFinal.mv.db
-*.mv.db
-*.trace.db
-h2/
