@@ -6,16 +6,6 @@ import java.util.UUID;
 
 import jakarta.persistence.*;
 
-
-/**
- * Adicionado o atributo e seus getters e setters
- * dataNascimento para podermos
- * fazer a campanha de
- * envio de promocao para o cliente
- */
-
-
-
 @Entity
 public class Cliente {
     @Id
@@ -26,6 +16,7 @@ public class Cliente {
     private String email;
     private String senha;
     private String cpf;
+    private boolean status = Boolean.TRUE;
     private LocalDateTime dataNascimento;
 
     @ManyToOne(cascade = CascadeType.ALL)
@@ -104,6 +95,14 @@ public class Cliente {
 
     public void setEndereco(Endereco endereco) {
         this.endereco = endereco;
+    }
+
+    public boolean getStatus() {
+        return status;
+    }
+
+    public void setStatus(boolean status) {
+        this.status = status;
     }
 
     public LocalDateTime getDataNascimento() {
