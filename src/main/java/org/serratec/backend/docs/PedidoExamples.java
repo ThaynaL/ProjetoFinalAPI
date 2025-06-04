@@ -7,7 +7,7 @@ public class PedidoExamples {
       {
         "id": 1,
         "dataPedido": "2025-06-03T14:30:00",
-        "statusPedido": "EM_PROCESSAMENTO",
+        "statusPedido": "PENDENTE",
         "dataEntregaPedido": "2025-06-10T18:00:00",
         "itemPedidos": [
           {
@@ -31,7 +31,7 @@ public class PedidoExamples {
     {
       "id": 1,
       "dataPedido": "2025-06-03T14:30:00",
-      "statusPedido": "EM_PROCESSAMENTO",
+      "statusPedido": "PENDENTE",
       "dataEntregaPedido": "2025-06-10T18:00:00",
       "itemPedidos": [
         {
@@ -56,7 +56,7 @@ public class PedidoExamples {
     		    {
     		      "id": 1,
     		      "dataPedido": "2025-06-03T14:30:00",
-    		      "statusPedido": "EM_PROCESSAMENTO",
+    		      "statusPedido": "CANCELADO",
     		      "dataEntregaPedido": "2025-06-10T18:00:00",
     		      "itemPedidos": [
     		        {
@@ -90,27 +90,22 @@ public class PedidoExamples {
     public static final String EXEMPLO_DELETE = "\"Pedido deletado com sucesso.\"";
     
     public static final String EXEMPLO_POST_RESPONSE = """
-    		{
-    		  "id": 1,
-    		  "dataPedido": "2025-06-03T14:30:00",
-    		  "statusPedido": "EM_PROCESSAMENTO",
-    		  "dataEntregaPedido": "2025-06-10T18:00:00",
-    		  "itemPedidos": [
-    		    {
-    		      "quantidade": 2,
-    		      "valorUnitario": 199.99,
-    		      "descontoPercentual": 0.1,
-    		      "valorTotal": 359.98,
-    		      "produtoResponseDTO": {
-    		        "id": 10,
-    		        "nomeProduto": "Tênis Nike Air",
-    		        "descricaoProduto": "Tênis de corrida confortável",
-    		        "valorProduto": 199.99
-    		      }
-    		    }
-    		  ]
-    		}
-    		""";
+    	    {
+    	      "idCliente": 1,
+    	      "itens": [
+    	        {
+    	          "idProduto": 2,
+    	          "quantidade": 2,
+    	          "valorUnitario": 120.5,
+    	          "descontoPercentual": 0.05
+    	        }
+    	      ],
+    	      "dataPedido": "2025-06-30T09:23:08",
+    	      "dataEntregaPedido": "2025-07-15T10:30:00",
+    	      "statusPedido": "PENDENTE"
+    	    }
+    	    """;
+    
     public static final String EXEMPLO_PUT_RESPONSE = """
     		{
     		  "id": 1,
