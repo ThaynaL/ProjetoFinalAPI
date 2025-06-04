@@ -14,7 +14,7 @@ import jakarta.validation.constraints.NotNull;
 public class PedidoRequestDTO implements Serializable {
     private static final long serialVersionUID = 1L;
 
-    @Schema(description = "Id do Cliente que está realizando o Pedido", example = "2")
+    @Schema(description = "Id do Cliente que está realizando o Pedido", example = "1")
     @NotNull
     private Long idCliente;
     @Schema(description = "Lista de itens do Pedido deve conter pelo menos 1 item")
@@ -30,7 +30,6 @@ public class PedidoRequestDTO implements Serializable {
     @NotNull(message = "O status do pedido é obrigatório!")
     private StatusPedido statusPedido;
 
-    // Getters e setters
 
     public Long getIdCliente() {
         return idCliente;

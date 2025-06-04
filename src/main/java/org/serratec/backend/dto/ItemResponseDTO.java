@@ -1,17 +1,31 @@
 package org.serratec.backend.dto;
+
 import org.serratec.backend.entity.ItemPedido;
 import org.serratec.backend.entity.Pedido;
 import org.serratec.backend.entity.Produto;
 
 import java.math.BigDecimal;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 
 public class ItemResponseDTO {
+
+    @Schema(description = "Informações do produto neste item do pedido")
     private ProdutoResponseDTO produtoResponseDTO;
+
+    @Schema(description = "Resumo do pedido ao qual este item pertence")
     private PedidoResponseDTO pedidoResponseDTO;
+
+    @Schema(description = "Quantidade de produtos neste item", example = "2")
     private Integer quantidade;
+
+    @Schema(description = "Valor total calculado deste item", example = "359.98")
     private BigDecimal valorTotal;
+
+    @Schema(description = "Valor unitário do produto", example = "199.99")
     private BigDecimal valorUnitario;
+
+    @Schema(description = "Desconto percentual aplicado ao item (ex: 0.1 = 10%)", example = "0.1")
     private Double descontoPercentual;
 
     public ItemResponseDTO() {

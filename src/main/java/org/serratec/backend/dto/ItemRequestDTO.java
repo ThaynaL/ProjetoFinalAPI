@@ -2,12 +2,24 @@ package org.serratec.backend.dto;
 
 import java.math.BigDecimal;
 
-public class ItemRequestDTO {
+import io.swagger.v3.oas.annotations.media.Schema;
+import jakarta.validation.constraints.NotNull;
 
-    private Long idProduto;
-    private Integer quantidade;
-    private BigDecimal valorUnitario;
-    private Double descontoPercentual;
+public class ItemRequestDTO {
+	 @Schema(description = "ID do produto", example = "2")
+	    @NotNull
+	    private Long idProduto;
+
+	    @Schema(description = "Quantidade do produto", example = "2")
+	    @NotNull
+	    private Integer quantidade;
+
+	    @Schema(description = "Valor unitário", example = "120.50")
+	    @NotNull
+	    private BigDecimal valorUnitario;
+
+	    @Schema(description = "Desconto percentual", example = "0.05")
+	    private Double descontoPercentual;
 
     public Long getIdProduto() {
         return idProduto;
