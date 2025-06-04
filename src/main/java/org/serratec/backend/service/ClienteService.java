@@ -1,8 +1,6 @@
 package org.serratec.backend.service;
 import java.time.LocalDate;
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import org.serratec.backend.config.MailConfig;
@@ -54,7 +52,6 @@ public class ClienteService {
         repository.deleteById(clienteId);
     }
 
-    //Post
     @Transactional
     public ClienteResponseDTO inserir(ClienteRequestDTO clienteDTO) {
         Optional<Cliente> optionalCliente = repository.findByEmail(clienteDTO.getEmail());
@@ -76,18 +73,19 @@ public class ClienteService {
         clienteSalvar.setSenha(passwordEncoder.encode(clienteDTO.getSenha()));
         clienteSalvar.setEndereco(endereco);
 
-        repository.save(clienteSalvar);
-
+        Set<ClientePerfil> perfis = new HashSet<>();
         for (ClientePerfil perfil : clienteDTO.getPerfils()) {
             perfil.setPerfil(perfilService.buscar(perfil.getPerfil().getId()));
             perfil.setCliente(clienteSalvar);
             perfil.setDataCriacao(LocalDate.now());
+            perfis.add(perfil);
         }
+        clienteSalvar.setPerfils(perfis);
+
+        repository.save(clienteSalvar);
+        clientePerfilRepository.saveAll(perfis);
 
         mailConfig.enviar(clienteSalvar.getEmail(), "Confirmação de cadastro", clienteSalvar.toString());
-
-        clientePerfilRepository.saveAll(clienteSalvar.getClientePerfis());
-        repository.save(clienteSalvar);
 
         return new ClienteResponseDTO(clienteSalvar);
     }
@@ -100,10 +98,11 @@ public class ClienteService {
             throw new ClienteException("Cliente não encontrado!");
         }
 
-        if (!optionalCliente.get().getStatus()){
+        Cliente clienteExistente = optionalCliente.get();
+
+        if (!clienteExistente.getStatus()) {
             throw new ClienteException("Cliente inativo!");
         }
-        Cliente clienteExistente = optionalCliente.get();
 
         clienteExistente.setNome(dto.getNome());
         clienteExistente.setEmail(dto.getEmail());
@@ -121,11 +120,14 @@ public class ClienteService {
         }
 
         if (dto.getPerfils() != null && !dto.getPerfils().isEmpty()) {
-            for (ClientePerfil perfil : dto.getPerfils()) {
-                perfil.setPerfil(perfilService.buscar(perfil.getPerfil().getId()));
-                perfil.setCliente(clienteExistente);
+            clienteExistente.getPerfils().clear();
+
+            for (ClientePerfil novoPerfil : dto.getPerfils()) {
+                novoPerfil.setPerfil(perfilService.buscar(novoPerfil.getPerfil().getId()));
+                novoPerfil.setCliente(clienteExistente);
+                novoPerfil.setDataCriacao(LocalDate.now());
+                clienteExistente.getPerfils().add(novoPerfil);
             }
-            clientePerfilRepository.saveAll(clienteExistente.getClientePerfis());
         }
 
         mailConfig.atualizar(clienteExistente.getEmail(), "Alteração de cadastro", clienteExistente.toString());
