@@ -1,5 +1,6 @@
 package org.serratec.backend.controller;
 
+import io.swagger.v3.oas.annotations.media.Content;
 import jakarta.validation.Valid;
 import org.serratec.backend.dto.ClienteRequestDTO;
 import org.serratec.backend.dto.ClienteResponseDTO;
@@ -36,18 +37,18 @@ public class ClienteController {
     @Operation(summary = "Cadastra um novo cliente")
     @ApiResponses(value = {
         @ApiResponse(responseCode = "201", description = "Cliente cadastrado com sucesso"),
-        @ApiResponse(responseCode = "400", description = "Dados inválidos para o cadastro")
+        @ApiResponse(responseCode = "400", description = "Dados inválidos para o cadastro", content = @Content())
     })
     @PostMapping
-    public ResponseEntity<ClienteResponseDTO>  cadastrar(@RequestBody @Valid ClienteRequestDTO cliente) {
+    public ResponseEntity<ClienteResponseDTO> cadastrar(@RequestBody @Valid ClienteRequestDTO cliente) {
         return ResponseEntity.status(HttpStatus.CREATED).body(service.inserir(cliente));
     }
     
     @Operation(summary = "Atualiza um cliente existente")
     @ApiResponses(value = {
         @ApiResponse(responseCode = "200", description = "Cliente atualizado com sucesso"),
-        @ApiResponse(responseCode = "400", description = "Dados inválidos para atualização"),
-        @ApiResponse(responseCode = "404", description = "Cliente não encontrado")
+        @ApiResponse(responseCode = "400", description = "Dados inválidos para atualização", content = @Content()),
+        @ApiResponse(responseCode = "404", description = "Cliente não encontrado", content = @Content())
     })
     @PutMapping("/{id}")
     public ResponseEntity<ClienteResponseDTO> atualizar(@PathVariable UUID id, @RequestBody @Valid ClienteRequestDTO cliente) {

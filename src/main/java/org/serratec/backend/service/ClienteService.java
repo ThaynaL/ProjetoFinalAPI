@@ -78,29 +78,22 @@ public class ClienteService {
 
         repository.save(clienteSalvar);
 
-        // associa os perfis
-        for (Long idPerfil : clienteDTO.getIdsPerfis()) {
-            ClientePerfil clientePerfil = new ClientePerfil();
-            clientePerfil.setCliente(clienteSalvar);
-            clientePerfil.setPerfil(perfilService.buscar(idPerfil));
-            clientePerfil.setDataCriacao(LocalDate.now());
-            clientePerfilRepository.save(clientePerfil);
+        for (ClientePerfil perfil : clienteDTO.getPerfils()) {
+            perfil.setPerfil(perfilService.buscar(perfil.getPerfil().getId()));
+            perfil.setCliente(clienteSalvar);
+            perfil.setDataCriacao(LocalDate.now());
         }
 
-        // 
-        /*
-        mailConfig.enviar(
-            clienteSalvar.getEmail(),
-            "Confirmação de cadastro",
-            "Olá, " + clienteSalvar.getNome() + "! Seu cadastro foi realizado com sucesso."
-        );
-        */
+        mailConfig.enviar(clienteSalvar.getEmail(), "Confirmação de cadastro", clienteSalvar.toString());
+
+        clientePerfilRepository.saveAll(clienteSalvar.getClientePerfis());
+        repository.save(clienteSalvar);
 
         return new ClienteResponseDTO(clienteSalvar);
     }
 
 
-
+    @Transactional
     public ClienteResponseDTO alterar(UUID id, ClienteRequestDTO dto) {
         Optional<Cliente> optionalCliente = repository.findById(id);
         if (optionalCliente.isEmpty()) {
@@ -126,6 +119,15 @@ public class ClienteService {
             Endereco novoEndereco = enderecoService.criarEnderecoPorCep(dto.getCep());
             clienteExistente.setEndereco(novoEndereco);
         }
+
+        if (dto.getPerfils() != null && !dto.getPerfils().isEmpty()) {
+            for (ClientePerfil perfil : dto.getPerfils()) {
+                perfil.setPerfil(perfilService.buscar(perfil.getPerfil().getId()));
+                perfil.setCliente(clienteExistente);
+            }
+            clientePerfilRepository.saveAll(clienteExistente.getClientePerfis());
+        }
+
         mailConfig.atualizar(clienteExistente.getEmail(), "Alteração de cadastro", clienteExistente.toString());
         return new ClienteResponseDTO(repository.save(clienteExistente));
     }

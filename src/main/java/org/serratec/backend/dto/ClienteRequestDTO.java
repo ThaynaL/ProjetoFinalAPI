@@ -2,10 +2,13 @@ package org.serratec.backend.dto;
 
 import java.io.Serializable;
 import java.time.LocalDate;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.validator.constraints.br.CPF;
 import org.serratec.backend.entity.Cliente;
 
@@ -16,6 +19,7 @@ import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.PastOrPresent;
 import jakarta.validation.constraints.Pattern;
+import org.serratec.backend.entity.ClientePerfil;
 
 
 public class ClienteRequestDTO implements Serializable {
@@ -72,16 +76,20 @@ public class ClienteRequestDTO implements Serializable {
     @PastOrPresent(message = "A data de nascimento não pode estar no futuro.")
     @JsonFormat(pattern = "dd/MM/yyyy")
     private LocalDate dataNascimento;
-    
-    @Schema(description = "Lista de IDs dos perfis do cliente", example = "[1, 2]")
-    private List<Long> idsPerfis;
 
-    public List<Long> getIdsPerfis() {
-        return idsPerfis;
+    @Schema(
+            description = "Perfis do cliente",
+            example = "[{\"id\": 1}]"
+    )
+    @JsonIgnore
+    private Set<ClientePerfil> perfils = new HashSet<>();
+
+    public Set<ClientePerfil> getPerfils() {
+        return perfils;
     }
 
-    public void setIdsPerfis(List<Long> idsPerfis) {
-        this.idsPerfis = idsPerfis;
+    public void setPerfils(Set<ClientePerfil> perfils) {
+        this.perfils = perfils;
     }
 
     public UUID getId() {
@@ -148,13 +156,10 @@ public class ClienteRequestDTO implements Serializable {
         this.nome = cliente.getNome();
         this.telefone = cliente.getTelefone();
         this.email = cliente.getEmail();
-        this.senha = "";
+        this.senha = cliente.getSenha();
         this.cpf = cliente.getCpf();
         this.cep = cliente.getEndereco().getCep();
         this.dataNascimento = cliente.getDataNascimento();
-        this.idsPerfis = cliente.getClientePerfis().stream()
-                .map(cp -> cp.getPerfil().getId())
-                .collect(Collectors.toList());
     }
 
     public ClienteRequestDTO() {

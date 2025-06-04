@@ -1,5 +1,6 @@
 package org.serratec.backend.dto;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.serratec.backend.entity.Cliente;
 import org.serratec.backend.entity.ClientePerfil;
 
@@ -30,8 +31,6 @@ public class ClienteResponseDTO {
     @Schema(description = "Data de nascimento do cliente. Deve estar no formato dd/MM/yyyy e não pode ser futura.", example = "02/08/2000")
     private LocalDate dataNascimento;
 
-    @Schema(description = "Lista de perfis associados ao cliente")
-    private List<PerfilResponseDTO> perfis;
 
     public ClienteResponseDTO(Cliente cliente) {
         this.id = cliente.getIdUuid();
@@ -40,11 +39,6 @@ public class ClienteResponseDTO {
         this.email = cliente.getEmail();
         this.cpf = cliente.getCpf();
         this.dataNascimento = cliente.getDataNascimento();
-
-        this.perfis = cliente.getClientePerfis().stream()
-                .map(ClientePerfil::getPerfil)
-                .map(PerfilResponseDTO::new)
-                .collect(Collectors.toList());
     }
 
     public UUID getId() {
@@ -71,10 +65,7 @@ public class ClienteResponseDTO {
         return dataNascimento;
     }
 
-    public List<PerfilResponseDTO> getPerfis() {
-        return perfis;
-    }
-
+    @JsonIgnore
     public Integer getMesAniversario() {
         return (dataNascimento != null) ? dataNascimento.getMonthValue() : null;
     }
