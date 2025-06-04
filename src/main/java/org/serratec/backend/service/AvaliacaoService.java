@@ -25,16 +25,15 @@ public class AvaliacaoService {
     private ClienteRepository clienteRepository;
 
     public Avaliacao criarAvaliacao(AvaliacaoDTO dto) {
-        Produto produto = produtoRepository.findById(dto.getProdutoId())
-                .orElseThrow(() -> new RuntimeException("Produto não encontrado"));
+       // Produto produto = produtoRepository.findById(dto.getProdutoId())
+               // .orElseThrow(() -> new RuntimeException("Produto não encontrado"));
 
-        Cliente cliente = clienteRepository.findById(dto.getClienteId())
+       Cliente cliente = clienteRepository.findById(dto.getClienteId())
                 .orElseThrow(() -> new RuntimeException("Cliente não encontrado"));
-
         Avaliacao avaliacao = new Avaliacao();
         avaliacao.setNota(dto.getNota());
         avaliacao.setComentario(dto.getComentario());
-        avaliacao.setProduto(produto);
+       // avaliacao.setProduto(produto);
         avaliacao.setCliente(cliente);
 
         return avaliacaoRepository.save(avaliacao);

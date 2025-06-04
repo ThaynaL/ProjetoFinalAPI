@@ -1,9 +1,12 @@
 package org.serratec.backend.dto;
 
+import java.io.Serializable;
 import java.util.UUID;
 
-public class AvaliacaoDTO {
-
+public class AvaliacaoDTO implements Serializable {
+	
+	private static final long serialVersionUID = 1L;
+	
     private int nota;
     private String comentario;
     private Long produtoId;

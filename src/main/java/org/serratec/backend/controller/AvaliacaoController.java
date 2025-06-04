@@ -16,6 +16,9 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import io.swagger.v3.oas.annotations.parameters.RequestBody;
 
 @RestController
@@ -26,8 +29,15 @@ public class AvaliacaoController {
     private AvaliacaoService avaliacaoService;
 
     @PostMapping
-    public ResponseEntity<Avaliacao> criar(@RequestBody AvaliacaoDTO dto) {
-        return ResponseEntity.status(HttpStatus.CREATED).body(avaliacaoService.criarAvaliacao(dto));
+    public ResponseEntity<Avaliacao> criar(@RequestBody AvaliacaoDTO dto) throws JsonProcessingException {
+    	Avaliacao teste = new Avaliacao() ;
+    	System.out.println("DTO recebido: " + new ObjectMapper().writeValueAsString(dto));
+
+
+    	return ResponseEntity.status(HttpStatus.CREATED).body(teste);
+    
+    	//return ResponseEntity.status(HttpStatus.CREATED).body(avaliacaoService.criarAvaliacao(dto));
+   
     }
 
     @GetMapping("/produto/{produtoId}")
