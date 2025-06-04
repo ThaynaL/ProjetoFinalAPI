@@ -2,12 +2,23 @@ package org.serratec.backend.dto;
 
 import java.util.List;
 
+import io.swagger.v3.oas.annotations.media.Schema;
+
 public class NotaFiscalRequestDTO {
-    
-	private String nomeCliente;
+
+    @Schema(description = "Nome completo do cliente", example = "Joana Silva")
+    private String nomeCliente;
+
+    @Schema(description = "CPF do cliente", example = "16434597754")
     private String cpfCliente;
+
+    @Schema(description = "Forma de pagamento escolhida", example = "Cartão de Crédito")
     private String formaPagamento;
+
+    @Schema(description = "Valor total da nota fiscal", example = "259.90")
     private Double valorTotal;
+
+    @Schema(description = "Lista de nomes dos itens comprados", example = "[\"Teclado Mecânico\", \"Mouse Gamer\"]")
     private List<String> itens;
 
     public String getNomeCliente() {
@@ -49,4 +60,4 @@ public class NotaFiscalRequestDTO {
     public void setItens(List<String> itens) {
         this.itens = itens;
     }
-} 
+}
