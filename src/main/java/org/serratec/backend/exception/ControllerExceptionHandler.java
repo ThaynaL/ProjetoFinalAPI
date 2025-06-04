@@ -43,4 +43,17 @@ public class ControllerExceptionHandler extends ResponseEntityExceptionHandler {
 		return super.handleExceptionInternal(ex, erroResposta, headers, status, request);
 
 	}
+	
+	// EXCEPTIONS DA CLASSE CATEGORIA abaixo 
+		@ExceptionHandler(CategoriaException.class)
+		protected ResponseEntity<Object> handleCategoriaException(CategoriaException ex) {
+			List<String> erros = new ArrayList<>();
+			erros.add(ex.getMessage());
+
+			ErroResposta erroResposta = new ErroResposta(400, "Erro na requisição da categoria", LocalDateTime.now(),
+					erros);
+
+			return ResponseEntity.badRequest().body(erroResposta);
+	}
+
 }

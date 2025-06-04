@@ -3,6 +3,7 @@ package org.serratec.backend.entity;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Set;
 import java.util.UUID;
@@ -30,6 +31,8 @@ public class Cliente implements UserDetails{
     private String email;
     private String senha;
     private String cpf;
+    private boolean status = Boolean.TRUE;
+    private LocalDate dataNascimento;
 
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "id_endereco")
@@ -44,6 +47,7 @@ public class Cliente implements UserDetails{
                 "Telefone: " + telefone + "\n" +
                 "E-mail: " + email + "\n" +
                 "CPF: " + cpf + "\n" +
+                "Data de nascimento: " + dataNascimento + "\n" +
                 "Endereco: " + endereco + "\n" +
                 "Pedidos: " + pedidos
                 ;
@@ -159,5 +163,20 @@ public class Cliente implements UserDetails{
 	public void setClientePerfis(Set<ClientePerfil> clientePerfis) {
 		this.clientePerfis = clientePerfis;
 	}
+    public boolean getStatus() {
+        return status;
+    }
+
+    public void setStatus(boolean status) {
+        this.status = status;
+    }
+
+    public LocalDate getDataNascimento() {
+        return dataNascimento;
+    }
+
+    public void setDataNascimento(LocalDate dataNascimento) {
+        this.dataNascimento = dataNascimento;
+    }
 }
 

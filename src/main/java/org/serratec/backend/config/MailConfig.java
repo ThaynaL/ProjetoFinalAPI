@@ -10,6 +10,16 @@ public class MailConfig {
     @Autowired
     private JavaMailSender mailSender;
 
+
+    public void emailAniversario(String para, String assunto, String texto) {
+        SimpleMailMessage message = new SimpleMailMessage();
+        message.setFrom("#@gmail.com");
+        message.setTo(para);
+        message.setSubject(assunto);
+        message.setText("Seu aniversário está chegando! \n" + texto + "\n\n\n" + "Serratec - 2025");
+        mailSender.send(message);
+    }
+
     public void enviar(String para, String assunto, String texto) {
         SimpleMailMessage message = new SimpleMailMessage();
         message.setFrom("#@gmail.com");

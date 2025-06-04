@@ -1,6 +1,11 @@
 package org.serratec.backend.entity;
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
+
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -18,21 +23,14 @@ public class Produto {
     private String descricaoProduto;
     private BigDecimal valorProduto;
 
-    /**
-     * Varios produtos
-     * podem estar em um determinado
-     * pedido
-     * @manytoone
-     */
-
-
     @ManyToOne
     @JoinColumn(name = "id_categoria")
     private Categoria categoria;
 
-    @OneToMany(mappedBy = "produto")
-    private List<ItemPedido> itemPedidos;
-    
+    @OneToMany(mappedBy = "id.produto", cascade = CascadeType.REMOVE, orphanRemoval = true)
+    @JsonBackReference
+    private List<ItemPedido> itemPedidos = new ArrayList<>();
+
     public Long getId() {
         return id;
     }

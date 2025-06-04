@@ -2,6 +2,7 @@ package org.serratec.backend.service;
 
 import org.serratec.backend.dto.EnderecoResponseDTO;
 import org.serratec.backend.entity.Endereco;
+import org.serratec.backend.exception.EnderecoException;
 import org.serratec.backend.repository.EnderecoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -28,8 +29,9 @@ public class EnderecoService {
         if (enderecoViaCep != null) {
             enderecoViaCep.setCep(cepSemFormatacao);
             return enderecoViaCep;
+        }else {
+            throw new EnderecoException("CEP " + cep + " não encontrado.");
         }
-        throw new HttpClientErrorException(HttpStatus.NOT_FOUND);
     }
 
     public EnderecoResponseDTO inserir(Endereco endereco) {
