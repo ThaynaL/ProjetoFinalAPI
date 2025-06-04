@@ -66,13 +66,23 @@ public class ClienteController {
         return ResponseEntity.noContent().build();
     }
 
-    @DeleteMapping("ativar/{id}")
+    @Operation(summary = "Desativa a conta do cliente pelo ID")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "204", description = "Cliente destivado com sucesso"),
+            @ApiResponse(responseCode = "404", description = "Cliente não encontrada")
+    })
+    @PutMapping("ativar/{id}")
     public ResponseEntity<Void> ativar(@PathVariable UUID id) {
         service.ativar(id);
         return ResponseEntity.noContent().build();
     }
 
-    @DeleteMapping("desativar/{id}")
+    @Operation(summary = "Ativar a conta do cliente pelo ID")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "204", description = "Cliente ativado com sucesso"),
+            @ApiResponse(responseCode = "404", description = "Cliente não encontrada")
+    })
+    @PutMapping("desativar/{id}")
     public ResponseEntity<Void> desativar(@PathVariable UUID id) {
         service.desativar(id);
         return ResponseEntity.noContent().build();

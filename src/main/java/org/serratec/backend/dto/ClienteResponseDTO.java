@@ -12,12 +12,13 @@ public class ClienteResponseDTO {
     private UUID id;
 	@Schema(description = "Nome completo do cliente.", example = "Juliana Périco")
     private String nome;
-	@Schema(description = "Número de telefone do cliente no formato nacional.", example = "24 98765-4321")
+	@Schema(description = "Número de telefone do cliente no formato nacional.", example = "2498765-4321")
     private String telefone;
 	@Schema(description = "Endereço de e-mail do cliente.", example = "juliana.perico@email.com")
     private String email;
 	@Schema(description = "CPF do cliente (somente números).", example = "12345678909") 
     private String cpf;
+    @Schema(description = "Data de nascimento do cliente. Deve estar no formato dd/MM/yyyy e não pode ser futura.", example = "02/08/2000")
     private LocalDate dataNascimento;
 
     public Integer getMesAniversario() {
@@ -30,6 +31,7 @@ public class ClienteResponseDTO {
         this.telefone = cliente.getTelefone();
         this.email = cliente.getEmail();
         this.cpf = cliente.getCpf();
+        this.dataNascimento = cliente.getDataNascimento();
     }
 
     public UUID getId() {
