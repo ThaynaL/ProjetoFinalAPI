@@ -27,8 +27,6 @@ public class PedidoController {
 
     @Operation(summary = "Listar todos os pedidos")
     @ApiResponse(responseCode = "200", description = "Pedidos listados com sucesso")
-
-    //get
     @GetMapping
     public List<PedidoResponseDTO> listarPedidos(){
         return service.listarPedidosPorCliente();
@@ -37,8 +35,6 @@ public class PedidoController {
     
     @Operation(summary = "Listar Pedidos Paginados")
     @ApiResponse(responseCode = "200", description = "Pedidos Paginados listados com sucesso")
-
-    //get pagina
     @GetMapping("/pagina")
     public Page<PedidoResponseDTO> listarPorPagina(@PageableDefault(page = 1, size = 10, sort = {"id", "valor"},
             direction = Sort.Direction.ASC) Pageable pageable){
@@ -50,9 +46,6 @@ public class PedidoController {
         @ApiResponse(responseCode = "200", description = "Pedido encontrado"),
         @ApiResponse(responseCode = "404", description = "Pedido não encontrado")
     })
-    
-    
-    //get id
     @GetMapping("/{id}")
     public ResponseEntity<PedidoResponseDTO> buscarPorId(@PathVariable Long id) {
         return ResponseEntity.status(HttpStatus.OK).body(service.buscarPorId(id));
@@ -61,8 +54,6 @@ public class PedidoController {
 
     @Operation(summary = "Cadastrar um novo pedido")
     @ApiResponse(responseCode = "201", description = "Pedido criado com sucesso")
-    
-    //post
     @PostMapping
     public ResponseEntity<PedidoResponseDTO> criarPedido(@RequestBody @Valid PedidoRequestDTO pedidoDTO) {
         return ResponseEntity.status(HttpStatus.CREATED).body(service.criarPedido(pedidoDTO));
@@ -74,8 +65,6 @@ public class PedidoController {
         @ApiResponse(responseCode = "404", description = "Pedido não encontrado"),
         @ApiResponse(responseCode = "400", description = "Dados Inválidos")
     })
-    
-    //put id
     @PutMapping("/{id}")
     public ResponseEntity<PedidoResponseDTO> atualizarPedido(@PathVariable(value="id") Long id,
                                                              @RequestBody @Valid PedidoRequestDTO pedidoDTO){
@@ -88,8 +77,6 @@ public class PedidoController {
         @ApiResponse(responseCode = "200", description = "Pedido deletado com sucesso"),
         @ApiResponse(responseCode = "404", description = "Pedido não encontrado")
     })
-    
-    //delete id
     @DeleteMapping("/{id}")
     public ResponseEntity<Object> deletarPedido(@PathVariable(value="id") Long id){
         service.deletarPedido(id);

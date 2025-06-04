@@ -1,6 +1,6 @@
 package org.serratec.backend.entity;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.UUID;
 
@@ -17,7 +17,7 @@ public class Cliente {
     private String senha;
     private String cpf;
     private boolean status = Boolean.TRUE;
-    private LocalDateTime dataNascimento;
+    private LocalDate dataNascimento;
 
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "id_endereco")
@@ -32,6 +32,7 @@ public class Cliente {
                 "Telefone: " + telefone + "\n" +
                 "E-mail: " + email + "\n" +
                 "CPF: " + cpf + "\n" +
+                "Data de nascimento: " + dataNascimento + "\n" +
                 "Endereco: " + endereco + "\n" +
                 "Pedidos: " + pedidos
                 ;
@@ -105,11 +106,11 @@ public class Cliente {
         this.status = status;
     }
 
-    public LocalDateTime getDataNascimento() {
+    public LocalDate getDataNascimento() {
         return dataNascimento;
     }
 
-    public void setDataNascimento(LocalDateTime dataNascimento) {
+    public void setDataNascimento(LocalDate dataNascimento) {
         this.dataNascimento = dataNascimento;
     }
 }

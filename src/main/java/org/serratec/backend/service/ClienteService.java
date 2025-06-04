@@ -33,13 +33,12 @@ public class ClienteService {
     @Autowired
     private MailConfig mailConfig;
 
-    //Get
     public List<ClienteResponseDTO> listar() {
        List<Cliente> clientes = repository.findAll();
        return clientes.stream().map(ClienteResponseDTO::new).collect(Collectors.toList());
     }
 
-    //Delete
+
     public void deletar(UUID clienteId) {
         if (!repository.existsById(clienteId)) {
             throw new ClienteException("Id não encontrado");
@@ -47,7 +46,7 @@ public class ClienteService {
         repository.deleteById(clienteId);
     }
 
-    //Post
+
     public ClienteResponseDTO inserir(ClienteRequestDTO cliente) {
         Optional<Cliente> optionalCliente = repository.findByEmail(cliente.getEmail());
         if (optionalCliente.isPresent()) {
@@ -64,17 +63,18 @@ public class ClienteService {
         clienteSalvar.setEmail(cliente.getEmail());
         clienteSalvar.setCpf(cliente.getCpf());
         clienteSalvar.setTelefone(cliente.getTelefone());
+        clienteSalvar.setDataNascimento(cliente.getDataNascimento());
         clienteSalvar.setSenha(passwordEncoder.encode(cliente.getSenha()));
         clienteSalvar.setEndereco(endereco);
 
         repository.save(clienteSalvar);
 
-        //mailConfig.enviar(clienteSalvar.getEmail(), "Confirmação de cadastro", clienteSalvar.toString());
+        mailConfig.enviar(clienteSalvar.getEmail(), "Confirmação de cadastro", clienteSalvar.toString());
 
         return new ClienteResponseDTO(clienteSalvar);
     }
 
-    //Put
+
     public ClienteResponseDTO alterar(UUID id, ClienteRequestDTO dto) {
         Optional<Cliente> optionalCliente = repository.findById(id);
         if (optionalCliente.isEmpty()) {
@@ -90,6 +90,7 @@ public class ClienteService {
         clienteExistente.setEmail(dto.getEmail());
         clienteExistente.setCpf(dto.getCpf());
         clienteExistente.setTelefone(dto.getTelefone());
+        clienteExistente.setDataNascimento(dto.getDataNascimento());
 
         if (dto.getSenha() != null && !dto.getSenha().isEmpty()) {
             clienteExistente.setSenha(passwordEncoder.encode(dto.getSenha()));

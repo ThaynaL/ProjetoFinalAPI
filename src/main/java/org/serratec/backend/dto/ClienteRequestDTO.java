@@ -1,8 +1,10 @@
 package org.serratec.backend.dto;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.Entity;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.PastOrPresent;
 import jakarta.validation.constraints.Pattern;
 import org.hibernate.validator.constraints.br.CPF;
 import org.serratec.backend.entity.Cliente;
@@ -10,6 +12,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 
 
 import java.io.Serializable;
+import java.time.LocalDate;
 import java.util.UUID;
 
 
@@ -28,9 +31,9 @@ public class ClienteRequestDTO implements Serializable {
     private String nome;
     @Schema(
             description = "Número de telefone do cliente no formato nacional.",
-            example = "24 98765-4321"
+            example = "2498765-4321"
     )
-    @Pattern(regexp = "\\d{2} ?\\d{4,5}-?\\d{4}", message = "Telefone inválido")
+    @Pattern(regexp = "\\d{2}\\d{4,5}-?\\d{4}", message = "Telefone inválido")
     @NotBlank(message = "Campo obrigatório")
     private String telefone;
     @Schema(
@@ -59,6 +62,14 @@ public class ClienteRequestDTO implements Serializable {
     )
     @Pattern(regexp = "\\d{5}-?\\d{3}", message = "CEP inválido")
     private String cep;
+
+    @Schema(
+            description = "Data de nascimento do cliente. Deve estar no formato dd/MM/yyyy.",
+            example = "02/08/2000"
+    )
+    @PastOrPresent(message = "A data de nascimento não pode estar no futuro.")
+    @JsonFormat(pattern = "dd/MM/yyyy")
+    private LocalDate dataNascimento;
 
     public UUID getId() {
         return id;
@@ -112,6 +123,14 @@ public class ClienteRequestDTO implements Serializable {
         return cep;
     }
 
+    public LocalDate getDataNascimento() {
+        return dataNascimento;
+    }
+
+    public void setDataNascimento(LocalDate dataNascimento) {
+        this.dataNascimento = dataNascimento;
+    }
+
     public ClienteRequestDTO(Cliente cliente) {
         this.nome = cliente.getNome();
         this.telefone = cliente.getTelefone();
@@ -119,6 +138,7 @@ public class ClienteRequestDTO implements Serializable {
         this.senha = cliente.getSenha();
         this.cpf = cliente.getCpf();
         this.cep = cliente.getEndereco().getCep();
+        this.dataNascimento = cliente.getDataNascimento();
     }
 
     public ClienteRequestDTO() {
