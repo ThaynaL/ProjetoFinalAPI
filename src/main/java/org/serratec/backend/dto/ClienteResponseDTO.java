@@ -18,6 +18,7 @@ public class ClienteResponseDTO {
     private String email;
 	@Schema(description = "CPF do cliente (somente números).", example = "12345678909") 
     private String cpf;
+    @Schema(description = "Data de nascimento do cliente. Deve estar no formato dd/MM/yyyy e não pode ser futura.", example = "02/08/2000")
     private LocalDate dataNascimento;
 
     public Integer getMesAniversario() {
@@ -30,6 +31,7 @@ public class ClienteResponseDTO {
         this.telefone = cliente.getTelefone();
         this.email = cliente.getEmail();
         this.cpf = cliente.getCpf();
+        this.dataNascimento = cliente.getDataNascimento();
     }
 
     public UUID getId() {
