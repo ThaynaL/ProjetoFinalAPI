@@ -36,12 +36,37 @@ public class SecurityConfig {
 	    http.csrf(csrf -> csrf.disable())
 	        .cors(cors -> cors.configurationSource(corsConfigurationSource()))
 	        .authorizeHttpRequests(requests -> requests
-	            .requestMatchers("/public/**").permitAll()
-	            .requestMatchers("/funcionarios").permitAll()
-	            .requestMatchers("/h2-console/**").permitAll()
-	            .requestMatchers(HttpMethod.GET, "/clientes").hasAnyRole("ADMIN", "USER")
-	            .requestMatchers(HttpMethod.POST, "/clientes").hasRole("ADMIN")
-	            .anyRequest().authenticated()
+	        	    .requestMatchers("/public/**").permitAll()
+	        	    .requestMatchers("/h2-console/**").permitAll()
+	        	    .requestMatchers("/v3/api-docs/**", "/swagger-ui/**", "/swagger-ui.html").permitAll()
+	        	    .requestMatchers("/funcionarios").permitAll()
+
+	        	    .requestMatchers(HttpMethod.GET, "/clientes").hasAnyRole("USER", "ADMIN")
+	        	    .requestMatchers(HttpMethod.PUT, "/clientes/**").hasRole("USER")
+	        	    .requestMatchers(HttpMethod.DELETE, "/clientes/**").hasRole("ADMIN")
+	        	    .requestMatchers(HttpMethod.PUT, "/clientes/ativar/**").hasRole("ADMIN")
+	        	    .requestMatchers(HttpMethod.PUT, "/clientes/desativar/**").hasRole("ADMIN")
+
+	        	    .requestMatchers(HttpMethod.GET, "/categorias/**").permitAll()
+	        	    .requestMatchers(HttpMethod.POST, "/categorias").hasRole("ADMIN")
+	        	    .requestMatchers(HttpMethod.PUT, "/categorias/**").hasRole("ADMIN")
+	        	    .requestMatchers(HttpMethod.DELETE, "/categorias/**").hasRole("ADMIN")
+
+	        	    .requestMatchers(HttpMethod.GET, "/produtos/**").permitAll()
+	        	    .requestMatchers(HttpMethod.POST, "/produtos").hasRole("ADMIN")
+	        	    .requestMatchers(HttpMethod.PUT, "/produtos/**").hasRole("ADMIN")
+	        	    .requestMatchers(HttpMethod.DELETE, "/produtos/**").hasRole("ADMIN")
+
+	        	    .requestMatchers(HttpMethod.GET, "/pedidos/**").hasAnyRole("USER", "ADMIN")
+	        	    .requestMatchers(HttpMethod.POST, "/pedidos").hasRole("USER")
+	        	    .requestMatchers(HttpMethod.PUT, "/pedidos/**").hasRole("USER")
+	        	    .requestMatchers(HttpMethod.DELETE, "/pedidos/**").hasRole("USER")
+
+	        	    .requestMatchers(HttpMethod.POST, "/emails").hasRole("ADMIN")
+
+	        	    .requestMatchers(HttpMethod.POST, "/nota-fiscal/pdf").hasAnyRole("USER", "ADMIN")
+
+	        	    .anyRequest().authenticated()
 	        )
 	        .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
 	        .headers(headers -> headers.frameOptions().disable());
