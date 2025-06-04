@@ -33,13 +33,12 @@ public class ClienteService {
     @Autowired
     private MailConfig mailConfig;
 
-    //Get
     public List<ClienteResponseDTO> listar() {
        List<Cliente> clientes = repository.findAll();
        return clientes.stream().map(ClienteResponseDTO::new).collect(Collectors.toList());
     }
 
-    //Delete
+
     public void deletar(UUID clienteId) {
         if (!repository.existsById(clienteId)) {
             throw new ClienteException("Id não encontrado");
@@ -47,7 +46,7 @@ public class ClienteService {
         repository.deleteById(clienteId);
     }
 
-    //Post
+
     public ClienteResponseDTO inserir(ClienteRequestDTO cliente) {
         Optional<Cliente> optionalCliente = repository.findByEmail(cliente.getEmail());
         if (optionalCliente.isPresent()) {
@@ -75,7 +74,7 @@ public class ClienteService {
         return new ClienteResponseDTO(clienteSalvar);
     }
 
-    //Put
+
     public ClienteResponseDTO alterar(UUID id, ClienteRequestDTO dto) {
         Optional<Cliente> optionalCliente = repository.findById(id);
         if (optionalCliente.isEmpty()) {

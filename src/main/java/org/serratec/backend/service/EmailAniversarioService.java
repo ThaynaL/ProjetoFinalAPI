@@ -16,20 +16,19 @@ public class EmailAniversarioService {
     private ClienteRepository clienteRepository;
 
     @Autowired
-    private MailConfig mailConfig;
+    private EmailService emailService;
 
-    //Executa a cada um mês
     @Scheduled(cron = "0 0 12 1 * *")
     public void enviarEmailAniversario() {
-    int mesAtual = LocalDate.now().getMonthValue();
-     List<Cliente> clientesAniversariantes = clienteRepository.findByMesAniversario(mesAtual);
+        int mesAtual = LocalDate.now().getMonthValue();
+        List<Cliente> clientesAniversariantes = clienteRepository.findByMesAniversario(mesAtual);
 
-  for (Cliente cliente : clientesAniversariantes) {
-      String assuntoEmail = "Aniversário do(a) " + cliente.getNome() + "!";
-      String corpoEmail = ("Olá " + cliente.getNome() + ", hoje é seu aniversário e quem ganha o presente somos nós," +
-              "ganhe até 30% de desconto em produtos selecionados, USANDO o CUPOM: FELIZANIVERSARIO" + cliente.getNome() + "!");
-      mailConfig.emailAniversario(cliente.getEmail(), assuntoEmail, corpoEmail);
-  }
+        for (Cliente cliente : clientesAniversariantes) {
+            String assuntoEmail = "Parabéns! do(a) " + cliente.getNome();
+            String corpoEmail = String.format("Olá " + cliente.getNome() + ", hoje é seu aniversário e quem ganha o presente somos nós," +
+                    "ganhe até 30% de desconto em produtos selecionados, USANDO o CUPOM: FELIZANIVERSARIO !");
+            emailService.sendEmail(cliente.getEmail(), assuntoEmail, corpoEmail);
+        }
     }
 
 }

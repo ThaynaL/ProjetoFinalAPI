@@ -25,7 +25,6 @@ public class ProdutoService {
         produto.setDescricaoProduto(dto.getDescricaoProduto());
         produto.setValorProduto(dto.getValorProduto());
 
-        // Aqui é onde associamos a categoria
         produto.setCategoria(
             categoriaRepository.findById(dto.getIdCategoria())
                 .orElseThrow(() -> new RuntimeException("Categoria com ID " + dto.getIdCategoria() + " não encontrada"))
@@ -35,7 +34,6 @@ public class ProdutoService {
         return new ProdutoResponseDTO(produto);
     }
 
-
     public List<ProdutoResponseDTO> listarProdutos(){
         List<Produto> produtos = produtoRepository.findAll();
         List<ProdutoResponseDTO> produtosDTO =new ArrayList<>();
@@ -44,7 +42,6 @@ public class ProdutoService {
         }
         return produtosDTO;
     }
-
 
     public ProdutoResponseDTO buscarPorId(Long id){
         Optional<Produto> produto = produtoRepository.findById(id);
@@ -56,10 +53,6 @@ public class ProdutoService {
         }
     }
 
-    /**
-     * Atualizar produto
-     * por ID
-     */
 
     public ProdutoResponseDTO atualizarProduto(Long id, ProdutoRequestDTO dto){
         Produto produtoExistente = produtoRepository.findById(id).orElseThrow(()
@@ -77,10 +70,6 @@ public class ProdutoService {
         return new ProdutoResponseDTO(produtoExistente);
     }
 
-    /**
-     * Deletor produto
-     * por ID
-     */
 
     public void deletarProduto(Long id){
         if(!produtoRepository.existsById(id)){
