@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 
 import java.util.List;
 import java.util.UUID;
@@ -26,6 +27,7 @@ public class ClienteController {
     private ClienteService service;
     
     @Operation(summary = "Lista todos os clientes")
+    @SecurityRequirement(name = "bearerAuth")
     @ApiResponses(value = {
         @ApiResponse(responseCode = "200", description = "Clientes listados com sucesso")
     })
@@ -35,6 +37,7 @@ public class ClienteController {
     }
     
     @Operation(summary = "Cadastra um novo cliente")
+    @SecurityRequirement(name = "bearerAuth")
     @ApiResponses(value = {
         @ApiResponse(responseCode = "201", description = "Cliente cadastrado com sucesso"),
         @ApiResponse(responseCode = "400", description = "Dados inválidos para o cadastro", content = @Content())
@@ -45,6 +48,7 @@ public class ClienteController {
     }
     
     @Operation(summary = "Atualiza um cliente existente")
+    @SecurityRequirement(name = "bearerAuth")
     @ApiResponses(value = {
         @ApiResponse(responseCode = "200", description = "Cliente atualizado com sucesso"),
         @ApiResponse(responseCode = "400", description = "Dados inválidos para atualização", content = @Content()),
@@ -57,6 +61,7 @@ public class ClienteController {
     }
     
     @Operation(summary = "Remove um cliente pelo ID")
+    @SecurityRequirement(name = "bearerAuth")
     @ApiResponses(value = {
         @ApiResponse(responseCode = "204", description = "Cliente removido com sucesso"),
         @ApiResponse(responseCode = "404", description = "Cliente não encontrado")
@@ -68,6 +73,7 @@ public class ClienteController {
     }
 
     @Operation(summary = "Desativa a conta do cliente pelo ID")
+    @SecurityRequirement(name = "bearerAuth")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "204", description = "Cliente destivado com sucesso"),
             @ApiResponse(responseCode = "404", description = "Cliente não encontrada")
@@ -79,6 +85,7 @@ public class ClienteController {
     }
 
     @Operation(summary = "Ativar a conta do cliente pelo ID")
+    @SecurityRequirement(name = "bearerAuth")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "204", description = "Cliente ativado com sucesso"),
             @ApiResponse(responseCode = "404", description = "Cliente não encontrada")
