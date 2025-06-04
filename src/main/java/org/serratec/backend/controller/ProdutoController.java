@@ -1,3 +1,4 @@
+
 package org.serratec.backend.controller;
 import java.util.List;
 
@@ -21,6 +22,7 @@ import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
 
 
@@ -52,17 +54,21 @@ public class ProdutoController {
     }
 
     @Operation(summary = "Cadastrar um novo produto")
+    @SecurityRequirement(name = "bearerAuth")
     @ApiResponse(responseCode = "201", description = "Produto criado com sucesso")
     @PostMapping
     public ResponseEntity<ProdutoResponseDTO> cadastrarProduto(@RequestBody @Valid ProdutoRequestDTO produtoRequestDTO) {
         return new ResponseEntity<>(service.cadastrarProduto(produtoRequestDTO), HttpStatus.CREATED);
     }
 
+    
+    
     @Operation(summary = "Atualizar um produto existente")
     @ApiResponses(value = {
         @ApiResponse(responseCode = "200", description = "Produto atualizado com sucesso"),
         @ApiResponse(responseCode = "404", description = "Produto não encontrado", content = @Content())
     })
+    @SecurityRequirement(name = "bearerAuth")
     @PutMapping({"/{id}"})
     public ResponseEntity<ProdutoResponseDTO> atualizarProduto(@Parameter(description = "ID do produto a ser atualizado")
     															@PathVariable(value="id") Long id,
@@ -71,12 +77,13 @@ public class ProdutoController {
                 (service.atualizarProduto(id, produtoDTO));
     }
 
+    
     @Operation(summary = "Deletar um produto")
+    @SecurityRequirement(name = "bearerAuth")
     @ApiResponses(value = {
         @ApiResponse(responseCode = "200", description = "Produto deletado com sucesso"),
         @ApiResponse(responseCode = "404", description = "Produto não encontrado")
-    })
-    
+    }) 
     @DeleteMapping({"/{id}"})
     public ResponseEntity<Object> deletarProduto(@Parameter(description = "ID do produto a ser deletado") 
     												@PathVariable(value="id") Long id){

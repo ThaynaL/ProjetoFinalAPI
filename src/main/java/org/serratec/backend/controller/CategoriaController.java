@@ -19,10 +19,12 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("/categorias")
+
 public class CategoriaController {
 
     @Autowired
@@ -48,6 +50,7 @@ public class CategoriaController {
     }
     
     @Operation(summary = "Insere uma nova categoria")
+    @SecurityRequirement(name = "bearerAuth")
     @ApiResponses(value = {
         @ApiResponse(responseCode = "201", description = "Categoria criada com sucesso"),
         @ApiResponse(responseCode = "400", description = "Dados inválidos", content = @Content())
@@ -58,6 +61,7 @@ public class CategoriaController {
     }
     
     @Operation(summary = "Atualiza uma categoria existente")
+    @SecurityRequirement(name = "bearerAuth")
     @ApiResponses(value = {
         @ApiResponse(responseCode = "200", description = "Categoria atualizada com sucesso"),
         @ApiResponse(responseCode = "400", description = "Dados inválidos", content = @Content()),
@@ -69,6 +73,7 @@ public class CategoriaController {
     }
     
     @Operation(summary = "Deleta uma categoria")
+    @SecurityRequirement(name = "bearerAuth")
     @ApiResponses(value = {
         @ApiResponse(responseCode = "204", description = "Categoria deletada com sucesso"),
         @ApiResponse(responseCode = "404", description = "Categoria não encontrada", content = @Content())

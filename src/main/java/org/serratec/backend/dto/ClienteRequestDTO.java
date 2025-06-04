@@ -1,19 +1,25 @@
 package org.serratec.backend.dto;
 
+import java.io.Serializable;
+import java.time.LocalDate;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+import java.util.UUID;
+import java.util.stream.Collectors;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.hibernate.validator.constraints.br.CPF;
+import org.serratec.backend.entity.Cliente;
+
 import com.fasterxml.jackson.annotation.JsonFormat;
-import jakarta.persistence.Entity;
+
+import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.PastOrPresent;
 import jakarta.validation.constraints.Pattern;
-import org.hibernate.validator.constraints.br.CPF;
-import org.serratec.backend.entity.Cliente;
-import io.swagger.v3.oas.annotations.media.Schema;
-
-
-import java.io.Serializable;
-import java.time.LocalDate;
-import java.util.UUID;
+import org.serratec.backend.entity.ClientePerfil;
 
 
 public class ClienteRequestDTO implements Serializable {
@@ -70,6 +76,21 @@ public class ClienteRequestDTO implements Serializable {
     @PastOrPresent(message = "A data de nascimento não pode estar no futuro.")
     @JsonFormat(pattern = "dd/MM/yyyy")
     private LocalDate dataNascimento;
+
+    @Schema(
+            description = "Perfis do cliente",
+            example = "[{\"id\": 1}]"
+    )
+    @JsonIgnore
+    private Set<ClientePerfil> perfils = new HashSet<>();
+
+    public Set<ClientePerfil> getPerfils() {
+        return perfils;
+    }
+
+    public void setPerfils(Set<ClientePerfil> perfils) {
+        this.perfils = perfils;
+    }
 
     public UUID getId() {
         return id;

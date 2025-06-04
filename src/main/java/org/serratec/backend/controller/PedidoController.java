@@ -1,3 +1,4 @@
+
 package org.serratec.backend.controller;
 
 import java.util.List;
@@ -29,10 +30,12 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.ExampleObject;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("/pedidos")
+@SecurityRequirement(name = "bearerAuth")
 public class PedidoController {
 
     @Autowired

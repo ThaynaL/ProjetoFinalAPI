@@ -1,5 +1,6 @@
 package org.serratec.backend.controller;
 
+import io.swagger.v3.oas.annotations.media.Content;
 import jakarta.validation.Valid;
 import org.serratec.backend.dto.ClienteRequestDTO;
 import org.serratec.backend.dto.ClienteResponseDTO;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 
 import java.util.List;
 import java.util.UUID;
@@ -25,6 +27,7 @@ public class ClienteController {
     private ClienteService service;
     
     @Operation(summary = "Lista todos os clientes")
+    @SecurityRequirement(name = "bearerAuth")
     @ApiResponses(value = {
         @ApiResponse(responseCode = "200", description = "Clientes listados com sucesso")
     })
@@ -34,20 +37,22 @@ public class ClienteController {
     }
     
     @Operation(summary = "Cadastra um novo cliente")
+    @SecurityRequirement(name = "bearerAuth")
     @ApiResponses(value = {
         @ApiResponse(responseCode = "201", description = "Cliente cadastrado com sucesso"),
-        @ApiResponse(responseCode = "400", description = "Dados inválidos para o cadastro")
+        @ApiResponse(responseCode = "400", description = "Dados inválidos para o cadastro", content = @Content())
     })
     @PostMapping
-    public ResponseEntity<ClienteResponseDTO>  cadastrar(@RequestBody @Valid ClienteRequestDTO cliente) {
+    public ResponseEntity<ClienteResponseDTO> cadastrar(@RequestBody @Valid ClienteRequestDTO cliente) {
         return ResponseEntity.status(HttpStatus.CREATED).body(service.inserir(cliente));
     }
     
     @Operation(summary = "Atualiza um cliente existente")
+    @SecurityRequirement(name = "bearerAuth")
     @ApiResponses(value = {
         @ApiResponse(responseCode = "200", description = "Cliente atualizado com sucesso"),
-        @ApiResponse(responseCode = "400", description = "Dados inválidos para atualização"),
-        @ApiResponse(responseCode = "404", description = "Cliente não encontrado")
+        @ApiResponse(responseCode = "400", description = "Dados inválidos para atualização", content = @Content()),
+        @ApiResponse(responseCode = "404", description = "Cliente não encontrado", content = @Content())
     })
     @PutMapping("/{id}")
     public ResponseEntity<ClienteResponseDTO> atualizar(@PathVariable UUID id, @RequestBody @Valid ClienteRequestDTO cliente) {
@@ -56,6 +61,7 @@ public class ClienteController {
     }
     
     @Operation(summary = "Remove um cliente pelo ID")
+    @SecurityRequirement(name = "bearerAuth")
     @ApiResponses(value = {
         @ApiResponse(responseCode = "204", description = "Cliente removido com sucesso"),
         @ApiResponse(responseCode = "404", description = "Cliente não encontrado")
@@ -67,6 +73,7 @@ public class ClienteController {
     }
 
     @Operation(summary = "Desativa a conta do cliente pelo ID")
+    @SecurityRequirement(name = "bearerAuth")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "204", description = "Cliente destivado com sucesso"),
             @ApiResponse(responseCode = "404", description = "Cliente não encontrada")
@@ -78,6 +85,7 @@ public class ClienteController {
     }
 
     @Operation(summary = "Ativar a conta do cliente pelo ID")
+    @SecurityRequirement(name = "bearerAuth")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "204", description = "Cliente ativado com sucesso"),
             @ApiResponse(responseCode = "404", description = "Cliente não encontrada")
