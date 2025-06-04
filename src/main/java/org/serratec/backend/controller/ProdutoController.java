@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import jakarta.validation.Valid;
@@ -42,7 +43,7 @@ public class ProdutoController {
     @Operation(summary = "Buscar produto por ID")
     @ApiResponses(value = {
         @ApiResponse(responseCode = "200", description = "Produto encontrado"),
-        @ApiResponse(responseCode = "404", description = "Produto não encontrado")
+        @ApiResponse(responseCode = "404", description = "Produto não encontrado", content = @Content())
     })
     @GetMapping("/{id}")
     public ResponseEntity<ProdutoResponseDTO> buscarPorId(@Parameter(description = "ID do produto a ser buscado")
@@ -60,7 +61,7 @@ public class ProdutoController {
     @Operation(summary = "Atualizar um produto existente")
     @ApiResponses(value = {
         @ApiResponse(responseCode = "200", description = "Produto atualizado com sucesso"),
-        @ApiResponse(responseCode = "404", description = "Produto não encontrado")
+        @ApiResponse(responseCode = "404", description = "Produto não encontrado", content = @Content())
     })
     @PutMapping({"/{id}"})
     public ResponseEntity<ProdutoResponseDTO> atualizarProduto(@Parameter(description = "ID do produto a ser atualizado")
