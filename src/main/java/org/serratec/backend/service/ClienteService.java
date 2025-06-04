@@ -52,7 +52,6 @@ public class ClienteService {
         repository.deleteById(clienteId);
     }
 
-    //Post
     @Transactional
     public ClienteResponseDTO inserir(ClienteRequestDTO clienteDTO) {
         Optional<Cliente> optionalCliente = repository.findByEmail(clienteDTO.getEmail());
@@ -86,7 +85,7 @@ public class ClienteService {
         repository.save(clienteSalvar);
         clientePerfilRepository.saveAll(perfis);
 
-        //mailConfig.enviar(clienteSalvar.getEmail(), "Confirmação de cadastro", clienteSalvar.toString());
+        mailConfig.enviar(clienteSalvar.getEmail(), "Confirmação de cadastro", clienteSalvar.toString());
 
         return new ClienteResponseDTO(clienteSalvar);
     }
