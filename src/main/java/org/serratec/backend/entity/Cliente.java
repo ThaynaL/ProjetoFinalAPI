@@ -126,7 +126,7 @@ public class Cliente implements UserDetails{
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         Set<GrantedAuthority> authorities = new HashSet<>();
-        for (ClientePerfil perfil : clientePerfis) {
+        for (ClientePerfil perfil : perfils) {
             String nomeRole = perfil.getPerfil().getNome(); 
             authorities.add(() -> nomeRole); 
         }
@@ -153,16 +153,19 @@ public class Cliente implements UserDetails{
     public boolean isEnabled() {
         return true;
     }
+
     @OneToMany(mappedBy = "id.cliente", fetch = FetchType.EAGER)
-    private Set<ClientePerfil> clientePerfis = new HashSet<>();
+    private Set<ClientePerfil> perfils = new HashSet<>();
 
-	public Set<ClientePerfil> getClientePerfis() {
-		return clientePerfis;
-	}
 
-	public void setClientePerfis(Set<ClientePerfil> clientePerfis) {
-		this.clientePerfis = clientePerfis;
-	}
+    public Set<ClientePerfil> getPerfils() {
+        return perfils;
+    }
+
+    public void setPerfils(Set<ClientePerfil> perfils) {
+        this.perfils = perfils;
+    }
+
     public boolean getStatus() {
         return status;
     }
