@@ -23,7 +23,7 @@ import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 @EnableWebSecurity
-@Configuration
+//@Configuration
 public class SecurityConfig {
 	@Autowired
 	private JwtUtil jwtUtil;
@@ -41,6 +41,13 @@ public class SecurityConfig {
 	            .requestMatchers("/h2-console/**").permitAll()
 	            .requestMatchers(HttpMethod.GET, "/clientes").hasAnyRole("ADMIN", "USER")
 	            .requestMatchers(HttpMethod.POST, "/clientes").hasRole("ADMIN")
+	            
+	            .requestMatchers(HttpMethod.GET, "/avaliacoes/**").permitAll()
+	            .requestMatchers(HttpMethod.POST, "/avaliacoes").permitAll()
+	            .requestMatchers(HttpMethod.PUT, "/avaliacoes/**").permitAll()
+	            .requestMatchers(HttpMethod.DELETE, "/avaliacoes/**").permitAll()
+
+	            
 	            .anyRequest().authenticated()
 	        )
 	        .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
