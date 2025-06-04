@@ -36,7 +36,7 @@ public class PedidoService {
     @Autowired
     private ProdutoRepository produtoRepository;
 
-    //get
+
     public List<PedidoResponseDTO> listarPedidosPorCliente(){
         List<Pedido> pedidos = pedidoRepository.findAll();
         return pedidos.stream().map(PedidoResponseDTO::new)
@@ -53,7 +53,7 @@ public class PedidoService {
                 -> new RuntimeException("Pedido informado nao foi encontrado!"));
     }
 
-    //delete
+
     public void deletarPedido(Long id) {
         if (!pedidoRepository.existsById(id)) {
             throw new RuntimeException("Pedido informado não foi encontrado!");
@@ -62,19 +62,16 @@ public class PedidoService {
     }
 
 
-    //post
     public PedidoResponseDTO criarPedido(PedidoRequestDTO pedidoDTO) {
-
-        // Criar o pedido base
         Pedido pedido = new Pedido();
         pedido.setDataPedido(LocalDateTime.now());
         pedido.setStatusPedido(pedidoDTO.getStatusPedido()); // usa o status vindo do DTO
         pedido.setDataEntregaPedido(pedidoDTO.getDataEntregaPedido());
 
-        // Salva o pedido no banco para gerar o ID
+
         pedido = pedidoRepository.save(pedido);
 
-        // Lista de itens do pedido a serem salvos
+
         List<ItemPedido> itensPedido = new ArrayList<>();
 
         for (ItemRequestDTO itemDTO : pedidoDTO.getItens()) {
@@ -92,14 +89,13 @@ public class PedidoService {
             itensPedido.add(item);
         }
 
-        // Salvar todos os itens
+
         itemPedidoService.salvarTodos(itensPedido);
 
         return new PedidoResponseDTO(pedido);
     }
 
 
-    //put
     public PedidoResponseDTO atualizarPedido(Long id, PedidoRequestDTO dto){
         Pedido pedidoExistente = pedidoRepository.findById(id).orElseThrow(()
                 -> new RuntimeException("Pedido informado nao foi encontrado!"));

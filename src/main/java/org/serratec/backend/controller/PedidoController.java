@@ -21,14 +21,14 @@ public class PedidoController {
     private PedidoService service;
 
 
-    //get
+
     @GetMapping
     public List<PedidoResponseDTO> listarPedidos(){
         return service.listarPedidosPorCliente();
     }
 
 
-    //get pagina
+
     @GetMapping("/pagina")
     public Page<PedidoResponseDTO> listarPorPagina(@PageableDefault(page = 1, size = 10, sort = {"id", "valor"},
             direction = Sort.Direction.ASC) Pageable pageable){
@@ -36,21 +36,21 @@ public class PedidoController {
     }
 
 
-    //get id
+
     @GetMapping("/{id}")
     public ResponseEntity<PedidoResponseDTO> buscarPorId(@PathVariable Long id) {
         return ResponseEntity.status(HttpStatus.OK).body(service.buscarPorId(id));
     }
 
 
-    //post
+
     @PostMapping
     public ResponseEntity<PedidoResponseDTO> criarPedido(@RequestBody @Valid PedidoRequestDTO pedidoDTO) {
         return ResponseEntity.status(HttpStatus.CREATED).body(service.criarPedido(pedidoDTO));
     }
 
 
-    //put id
+
     @PutMapping("/{id}")
     public ResponseEntity<PedidoResponseDTO> atualizarPedido(@PathVariable(value="id") Long id,
                                                              @RequestBody @Valid PedidoRequestDTO pedidoDTO){
@@ -58,7 +58,7 @@ public class PedidoController {
     }
 
 
-    //delete id
+
     @DeleteMapping("/{id}")
     public ResponseEntity<Object> deletarPedido(@PathVariable(value="id") Long id){
         service.deletarPedido(id);
