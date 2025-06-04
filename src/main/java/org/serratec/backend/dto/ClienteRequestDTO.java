@@ -123,6 +123,14 @@ public class ClienteRequestDTO implements Serializable {
         return cep;
     }
 
+    public LocalDate getDataNascimento() {
+        return dataNascimento;
+    }
+
+    public void setDataNascimento(LocalDate dataNascimento) {
+        this.dataNascimento = dataNascimento;
+    }
+
     public ClienteRequestDTO(Cliente cliente) {
         this.nome = cliente.getNome();
         this.telefone = cliente.getTelefone();

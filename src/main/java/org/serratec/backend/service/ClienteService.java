@@ -64,6 +64,7 @@ public class ClienteService {
         clienteSalvar.setEmail(cliente.getEmail());
         clienteSalvar.setCpf(cliente.getCpf());
         clienteSalvar.setTelefone(cliente.getTelefone());
+        clienteSalvar.setDataNascimento(cliente.getDataNascimento());
         clienteSalvar.setSenha(passwordEncoder.encode(cliente.getSenha()));
         clienteSalvar.setEndereco(endereco);
 
@@ -90,6 +91,7 @@ public class ClienteService {
         clienteExistente.setEmail(dto.getEmail());
         clienteExistente.setCpf(dto.getCpf());
         clienteExistente.setTelefone(dto.getTelefone());
+        clienteExistente.setDataNascimento(dto.getDataNascimento());
 
         if (dto.getSenha() != null && !dto.getSenha().isEmpty()) {
             clienteExistente.setSenha(passwordEncoder.encode(dto.getSenha()));
