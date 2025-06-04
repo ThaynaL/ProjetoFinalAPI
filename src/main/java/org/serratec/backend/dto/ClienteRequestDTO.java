@@ -31,9 +31,9 @@ public class ClienteRequestDTO implements Serializable {
     private String nome;
     @Schema(
             description = "Número de telefone do cliente no formato nacional.",
-            example = "24 98765-4321"
+            example = "2498765-4321"
     )
-    @Pattern(regexp = "\\d{2} ?\\d{4,5}-?\\d{4}", message = "Telefone inválido")
+    @Pattern(regexp = "\\d{2}\\d{4,5}-?\\d{4}", message = "Telefone inválido")
     @NotBlank(message = "Campo obrigatório")
     private String telefone;
     @Schema(

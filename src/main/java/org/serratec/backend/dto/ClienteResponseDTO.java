@@ -12,7 +12,7 @@ public class ClienteResponseDTO {
     private UUID id;
 	@Schema(description = "Nome completo do cliente.", example = "Juliana Périco")
     private String nome;
-	@Schema(description = "Número de telefone do cliente no formato nacional.", example = "24 98765-4321")
+	@Schema(description = "Número de telefone do cliente no formato nacional.", example = "2498765-4321")
     private String telefone;
 	@Schema(description = "Endereço de e-mail do cliente.", example = "juliana.perico@email.com")
     private String email;
