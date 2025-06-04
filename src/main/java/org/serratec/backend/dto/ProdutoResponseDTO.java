@@ -1,15 +1,29 @@
 package org.serratec.backend.dto;
 
-import org.serratec.backend.entity.Produto;
-
 import java.math.BigDecimal;
 
+import org.serratec.backend.entity.Produto;
+
+import io.swagger.v3.oas.annotations.media.Schema;
+
 public class ProdutoResponseDTO {
+
+    @Schema(description = "ID do produto", example = "1")
     private Long id;
+
+    @Schema(description = "Nome do produto", example = "Mouse Gamer RGB")
     private String nomeProduto;
+
+    @Schema(description = "Descrição do produto", example = "Mouse com sensor óptico de alta precisão e iluminação RGB")
     private String descricaoProduto;
+
+    @Schema(description = "Valor do produto", example = "149.90")
     private BigDecimal valorProduto;
+
+    @Schema(description = "ID da categoria", example = "2")
     private Long idCategoria;
+
+    @Schema(description = "Nome da categoria", example = "Informática")
     private String nomeCategoria;
 
     public ProdutoResponseDTO(Produto produto) {
@@ -24,24 +38,7 @@ public class ProdutoResponseDTO {
         }
     }
 
-
-
-
-    public String getNomeCategoria() {
-		return nomeCategoria;
-	}
-
-
-
-
-	public void setNomeCategoria(String nomeCategoria) {
-		this.nomeCategoria = nomeCategoria;
-	}
-
-
-
-
-	public Long getId() {
+    public Long getId() {
         return id;
     }
 
@@ -59,6 +56,10 @@ public class ProdutoResponseDTO {
 
     public Long getIdCategoria() {
         return idCategoria;
+    }
+
+    public String getNomeCategoria() {
+        return nomeCategoria;
     }
 
     public void setId(Long id) {
@@ -79,5 +80,9 @@ public class ProdutoResponseDTO {
 
     public void setIdCategoria(Long idCategoria) {
         this.idCategoria = idCategoria;
+    }
+
+    public void setNomeCategoria(String nomeCategoria) {
+        this.nomeCategoria = nomeCategoria;
     }
 }
