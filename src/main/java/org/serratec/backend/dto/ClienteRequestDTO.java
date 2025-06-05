@@ -81,7 +81,6 @@ public class ClienteRequestDTO implements Serializable {
             description = "Perfis do cliente",
             example = "[{\"id\": 1}]"
     )
-    @JsonIgnore
     private Set<ClientePerfil> perfils = new HashSet<>();
 
     public Set<ClientePerfil> getPerfils() {

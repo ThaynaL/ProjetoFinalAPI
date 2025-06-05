@@ -80,58 +80,61 @@ public class ClienteService {
             perfil.setDataCriacao(LocalDate.now());
             perfis.add(perfil);
         }
-        clienteSalvar.setPerfils(perfis);
 
         repository.save(clienteSalvar);
         clientePerfilRepository.saveAll(perfis);
 
         mailConfig.enviar(clienteSalvar.getEmail(), "Confirmação de cadastro", clienteSalvar.toString());
-
         return new ClienteResponseDTO(clienteSalvar);
     }
 
 
     @Transactional
     public ClienteResponseDTO alterar(UUID id, ClienteRequestDTO dto) {
-        Optional<Cliente> optionalCliente = repository.findById(id);
-        if (optionalCliente.isEmpty()) {
-            throw new ClienteException("Cliente não encontrado!");
-        }
+        Optional<Cliente> cliente = Optional.ofNullable(repository.findById(id).orElseThrow(()-> new ClienteException("ID não encontrado.")));
 
-        Cliente clienteExistente = optionalCliente.get();
+        repository.findByEmail(dto.getEmail()).ifPresent(c -> {
+            throw new ClienteException("Email já cadastrado");
+        });
 
-        if (!clienteExistente.getStatus()) {
+        if (!cliente.get().getStatus()) {
             throw new ClienteException("Cliente inativo!");
         }
 
-        clienteExistente.setNome(dto.getNome());
-        clienteExistente.setEmail(dto.getEmail());
-        clienteExistente.setCpf(dto.getCpf());
-        clienteExistente.setTelefone(dto.getTelefone());
-        clienteExistente.setDataNascimento(dto.getDataNascimento());
+        cliente.get().setNome(dto.getNome());
+        cliente.get().setEmail(dto.getEmail());
+        cliente.get().setCpf(dto.getCpf());
+        cliente.get().setTelefone(dto.getTelefone());
+        cliente.get().setDataNascimento(dto.getDataNascimento());
 
         if (dto.getSenha() != null && !dto.getSenha().isEmpty()) {
-            clienteExistente.setSenha(passwordEncoder.encode(dto.getSenha()));
+            cliente.get().setSenha(passwordEncoder.encode(dto.getSenha()));
+        } else {
+            throw new ClienteException("Senha invalida!");
         }
 
         if (dto.getCep() != null && !dto.getCep().isEmpty()) {
             Endereco novoEndereco = enderecoService.criarEnderecoPorCep(dto.getCep());
-            clienteExistente.setEndereco(novoEndereco);
+            cliente.get().setEndereco(novoEndereco);
+        } else {
+            throw new ClienteException("CEP invalido!");
         }
 
+        Set<ClientePerfil> perfis = new HashSet<>();
         if (dto.getPerfils() != null && !dto.getPerfils().isEmpty()) {
-            clienteExistente.getPerfils().clear();
-
             for (ClientePerfil novoPerfil : dto.getPerfils()) {
                 novoPerfil.setPerfil(perfilService.buscar(novoPerfil.getPerfil().getId()));
-                novoPerfil.setCliente(clienteExistente);
+                novoPerfil.setCliente(cliente.get());
                 novoPerfil.setDataCriacao(LocalDate.now());
-                clienteExistente.getPerfils().add(novoPerfil);
+                perfis.add(novoPerfil);
             }
         }
 
-        mailConfig.atualizar(clienteExistente.getEmail(), "Alteração de cadastro", clienteExistente.toString());
-        return new ClienteResponseDTO(repository.save(clienteExistente));
+        repository.save(cliente.get());
+        clientePerfilRepository.saveAll(perfis);
+
+        mailConfig.atualizar(cliente.get().getEmail(), "Alteração de cadastro", cliente.get().toString());
+        return new ClienteResponseDTO(cliente.get());
     }
 
     public void ativar(UUID id) {
@@ -157,5 +160,4 @@ public class ClienteService {
         cliente.setStatus(false);
         repository.save(cliente);
     }
-
 }

@@ -7,8 +7,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import io.swagger.v3.oas.annotations.security.SecurityRequirement;
-
 @RestController
 @RequestMapping("/emails")
 public class EmailController {
@@ -16,7 +14,6 @@ public class EmailController {
     @Autowired
     private EmailAniversarioService emailAniversarioService;
 
-    @SecurityRequirement(name = "bearerAuth")
     @PostMapping
     public ResponseEntity<String> enviarEmailAniversario() {
         emailAniversarioService.enviarEmailAniversario();

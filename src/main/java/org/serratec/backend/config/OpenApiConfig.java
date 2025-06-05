@@ -44,7 +44,7 @@ public class OpenApiConfig {
 		contact.setUrl("https://www.meudominio.com.br");
 		License apacheLicense = new License().name("Apache 	License")
 				.url("https://www.apache.org/licenses/LICENSE-2.0");
-		Info info = new Info().title("API de Teste").version("1.0").contact(contact)
+		Info info = new Info().title("Ecommerce Grupo 5").version("1.0").contact(contact)
 				.description("API para testes diversos").termsOfService("https://www.meudominio.com.br/termos")
 				.license(apacheLicense);
 		return new OpenAPI()

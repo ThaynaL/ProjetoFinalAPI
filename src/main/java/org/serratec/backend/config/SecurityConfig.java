@@ -37,7 +37,7 @@ public class SecurityConfig {
 	        .cors(cors -> cors.configurationSource(corsConfigurationSource()))
 	        .authorizeHttpRequests(requests -> requests
 	        	    .requestMatchers("/public/**").permitAll()
-	        	    .requestMatchers("/h2-console/**").permitAll()
+	        	    .requestMatchers("/h2/**").permitAll()
 					.requestMatchers("/auth/login").permitAll()
 	        	    .requestMatchers("/v3/api-docs/**", "/swagger-ui/**", "/swagger-ui.html").permitAll()
 	        	    .requestMatchers("/funcionarios").permitAll()
@@ -47,6 +47,7 @@ public class SecurityConfig {
 	        	    .requestMatchers(HttpMethod.DELETE, "/clientes/**").hasRole("ADMIN")
 	        	    .requestMatchers(HttpMethod.PUT, "/clientes/ativar/**").hasRole("ADMIN")
 	        	    .requestMatchers(HttpMethod.PUT, "/clientes/desativar/**").hasRole("ADMIN")
+					.requestMatchers(HttpMethod.POST, "/clientes").permitAll()
 
 	        	    .requestMatchers(HttpMethod.GET, "/categorias/**").permitAll()
 	        	    .requestMatchers(HttpMethod.POST, "/categorias").hasRole("ADMIN")
@@ -65,8 +66,7 @@ public class SecurityConfig {
 
 	        	    .requestMatchers(HttpMethod.POST, "/emails").hasRole("ADMIN")
 
-	        	    .requestMatchers(HttpMethod.POST, "/nota-fiscal/pdf").hasAnyRole("USER", "ADMIN")
-
+	        	    .requestMatchers(HttpMethod.POST, "/nota-fiscal/pdf").permitAll()
 	        	    .anyRequest().authenticated()
 	        )
 	        .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))

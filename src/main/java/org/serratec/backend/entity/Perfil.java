@@ -19,22 +19,27 @@ public class Perfil {
 	@OneToMany(mappedBy = "id.perfil")
 	private Set<ClientePerfil> clientePerfis = new HashSet<>();
 
-		
-	public Set<ClientePerfil> getClientePerfis() {
-		return clientePerfis;
-	}
 	public Long getId() {
 		return id;
 	}
+
 	public void setId(Long id) {
 		this.id = id;
 	}
+
 	public String getNome() {
 		return nome;
 	}
+
 	public void setNome(String nome) {
 		this.nome = nome;
 	}
 
-	
+	public Set<ClientePerfil> getClientePerfis() {
+		return clientePerfis;
+	}
+
+	public void setClientePerfis(Set<ClientePerfil> clientePerfis) {
+		this.clientePerfis = clientePerfis;
+	}
 }
