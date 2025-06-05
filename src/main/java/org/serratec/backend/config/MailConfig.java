@@ -10,10 +10,9 @@ public class MailConfig {
     @Autowired
     private JavaMailSender mailSender;
 
-
     public void emailAniversario(String para, String assunto, String texto) {
         SimpleMailMessage message = new SimpleMailMessage();
-        message.setFrom("#@gmail.com");
+        message.setFrom("themasterlisboa@gmail.com");
         message.setTo(para);
         message.setSubject(assunto);
         message.setText("Seu aniversário está chegando! \n" + texto + "\n\n\n" + "Serratec - 2025");
@@ -22,7 +21,7 @@ public class MailConfig {
 
     public void enviar(String para, String assunto, String texto) {
         SimpleMailMessage message = new SimpleMailMessage();
-        message.setFrom("#@gmail.com");
+        message.setFrom("themasterlisboa@gmail.com");
         message.setTo(para);
         message.setSubject(assunto);
         message.setText("Confirmação de cadastro \n" + texto + "\n\n\n" + "Serratec - 2025");
@@ -31,7 +30,7 @@ public class MailConfig {
 
     public void atualizar(String para, String assunto, String texto) {
         SimpleMailMessage message = new SimpleMailMessage();
-        message.setFrom("#.com");
+        message.setFrom("themasterlisboa@gmail.com");
         message.setTo(para);
         message.setSubject(assunto);
         message.setText("Seu cadastro foi alterado \n" + texto + "\n\n\n" + "Serratec - 2025");

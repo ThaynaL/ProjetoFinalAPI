@@ -14,18 +14,14 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
-import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 
 @RestController
 @RequestMapping("/nota-fiscal")
 public class NotaFiscalController {
-
     @Autowired
     private NotaFiscalPdfService pdfService;
 
-    
     @PostMapping("/pdf")
-    @SecurityRequirement(name = "bearerAuth")
     @Operation(summary = "Gerar PDF da nota fiscal",
                description = "Gera um arquivo PDF com os dados da nota fiscal enviados no corpo da requisição.")
     @ApiResponses(value = {

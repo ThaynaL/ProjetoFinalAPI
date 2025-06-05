@@ -49,8 +49,7 @@ public class Cliente implements UserDetails{
                 "CPF: " + cpf + "\n" +
                 "Data de nascimento: " + dataNascimento + "\n" +
                 "Endereco: " + endereco + "\n" +
-                "Pedidos: " + pedidos
-                ;
+                "Pedidos: " + pedidos;
     }
 
     public UUID getIdUuid() {
