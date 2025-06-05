@@ -84,5 +84,16 @@ public class Pedido {
     public void setDataEntregaPedido(LocalDateTime dataEntregaPedido) {
         this.dataEntregaPedido = dataEntregaPedido;
     }
+    @OneToMany(mappedBy = "pedido", cascade = CascadeType.ALL)
+    private List<HistoricoStatusPedido> historicoStatus = new ArrayList<>();
+
+    public List<HistoricoStatusPedido> getHistoricoStatus() {
+        return historicoStatus;
+    }
+
+    public void setHistoricoStatus(List<HistoricoStatusPedido> historicoStatus) {
+        this.historicoStatus = historicoStatus;
+    }
+
 
 }
